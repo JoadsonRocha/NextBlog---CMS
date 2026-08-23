@@ -10,8 +10,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const body = await req.json();
+    const body = await req.json().catch(() => ({}));
     const { action, prompt, currentText, tone, blockType, title, category } = body;
+
+    // Sanitize and limit input length to prevent token abuse
+    const sanitizedPrompt = typeof prompt === 'string' ? prompt.trim().slice(0, 4000) : '';
+    const sanitizedCurrentText = typeof currentText === 'string' ? currentText.trim().slice(0, 8000) : '';
 
     // Helper to call Groq API (OpenAI compatible endpoint)
     const callGroq = async (systemPrompt: string, userPrompt: string, jsonMode: boolean = false) => {
@@ -38,7 +42,14 @@ export async function POST(req: NextRequest) {
       }
 
       const data = await response.json();
-      return data.choices?.[0]?.message?.content || '';
+      let rawContent = data.choices?.[0]?.message?.content || '';
+
+      // Clean potential markdown backticks from json output
+      if (jsonMode && typeof rawContent === 'string') {
+        rawContent = rawContent.replace(/^```json\s*/, '').replace(/\s*```$/, '').trim();
+      }
+
+      return rawContent;
     };
 
     if (action === 'generate_post') {
@@ -55,7 +66,7 @@ Você DEVE retornar estritamente um objeto JSON válido contendo:
 - "blocks": array de blocos de conteúdo. Cada bloco deve ter 'type' ('heading', 'paragraph', 'quote', 'cta_banner', 'faq', 'code', 'pricing', 'callout', 'timeline', 'tabs') e 'content' com os dados necessários.
 Crie entre 4 e 6 blocos ricos e aprofundados.`;
 
-      const userPrompt = `Gere o artigo completo em JSON para o tema: "${prompt}"`;
+      const userPrompt = `Gere o artigo completo em JSON para o tema: "${sanitizedPrompt}"`;
       const resultText = await callGroq(systemPrompt, userPrompt, true);
       const parsed = JSON.parse(resultText);
       return NextResponse.json({ success: true, data: parsed });
@@ -64,7 +75,7 @@ Crie entre 4 e 6 blocos ricos e aprofundados.`;
     if (action === 'rewrite_text') {
       const tonePrompt = tone || 'profissional e envolvente';
       const systemPrompt = `Você é um editor de texto experiente. Reescreva o texto em português brasileiro no tom: "${tonePrompt}". Retorne apenas o texto reescrito, sem introduções ou explicações.`;
-      const userPrompt = `Texto original: "${currentText}"`;
+      const userPrompt = `Texto original: "${sanitizedCurrentText}"`;
       const rewritten = await callGroq(systemPrompt, userPrompt, false);
       return NextResponse.json({ success: true, result: rewritten });
     }
