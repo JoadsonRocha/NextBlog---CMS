@@ -23,6 +23,7 @@ import {
   Puzzle,
   RotateCw,
   Wand2,
+  LogOut,
 } from 'lucide-react';
 
 export function WPAdminBar() {
@@ -36,6 +37,7 @@ export function WPAdminBar() {
     createNewPost,
     createNewPage,
     setPublicRoute,
+    logout,
   } = useCMS();
 
   const [newDropdownOpen, setNewDropdownOpen] = useState(false);
@@ -313,6 +315,15 @@ export function WPAdminBar() {
             >
               <Settings className="w-3.5 h-3.5" />
               <span>Editar Meu Perfil</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={logout}
+              className="w-full text-left px-3 py-1.5 text-xs text-rose-300 hover:bg-rose-600 hover:text-white flex items-center gap-2 transition-colors"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Sair (Encerrar Sessão)</span>
             </button>
           </div>
         </div>

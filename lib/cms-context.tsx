@@ -55,6 +55,25 @@ interface CMSContextType {
   setUserRole: (role: UserRole) => void;
   switchUserRole: (role: UserRole) => void;
 
+  // Installation & Authentication (WordPress Style)
+  isInstalled: boolean;
+  setIsInstalled: (val: boolean) => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (val: boolean) => void;
+  completeInstallation: (config: {
+    siteName: string;
+    siteTagline?: string;
+    dbProvider: string;
+    dbUrl?: string;
+    adminName: string;
+    adminEmail: string;
+    adminPassword?: string;
+    themeId?: string;
+    loadDemo?: boolean;
+  }) => void;
+  login: (email: string, password?: string) => boolean;
+  logout: () => void;
+
   // Currently Editing Item
   editingTarget: { type: 'post' | 'page'; id: string } | null;
   setEditingTarget: (target: { type: 'post' | 'page'; id: string } | null) => void;
@@ -170,6 +189,26 @@ export function CMSProvider({ children }: { children: ReactNode }) {
   const [activeView, setActiveView] = useState<AdminView>('dashboard');
   const [users, setUsers] = useState<User[]>(INITIAL_USERS);
   const [currentUser, setCurrentUser] = useState<User>(INITIAL_USERS[0]); // Default Admin
+
+  // Installation & Authentication Status (WordPress Style)
+  const [isInstalled, setIsInstalled] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nextblog_is_installed');
+      if (saved === 'false') return false;
+      return true;
+    }
+    return true;
+  });
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nextblog_is_authenticated');
+      if (saved === 'false') return false;
+      return true;
+    }
+    return true;
+  });
+
   const [editingTarget, setEditingTarget] = useState<{ type: 'post' | 'page'; id: string } | null>({
     type: 'post',
     id: INITIAL_POSTS[0].id,
@@ -1174,9 +1213,101 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const completeInstallation = (config: {
+    siteName: string;
+    siteTagline?: string;
+    dbProvider: string;
+    dbUrl?: string;
+    adminName: string;
+    adminEmail: string;
+    adminPassword?: string;
+    themeId?: string;
+    loadDemo?: boolean;
+  }) => {
+    setSettings((prev) => ({
+      ...prev,
+      siteName: config.siteName || prev.siteName,
+      siteTagline: config.siteTagline || prev.siteTagline,
+      databaseProvider: (config.dbProvider as any) || prev.databaseProvider,
+      databaseUrl: config.dbUrl || prev.databaseUrl,
+    }));
+
+    const masterAdmin: User = {
+      id: 'admin-master',
+      name: config.adminName || 'Super Administrador',
+      email: config.adminEmail || 'admin@nextblog.com',
+      role: 'admin',
+      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    };
+    setUsers((prev) => [masterAdmin, ...prev.filter((u) => u.email !== masterAdmin.email)]);
+    setCurrentUser(masterAdmin);
+
+    if (config.themeId) {
+      activateTheme(config.themeId);
+    }
+
+    setIsInstalled(true);
+    setIsAuthenticated(true);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('nextblog_is_installed', 'true');
+      localStorage.setItem('nextblog_is_authenticated', 'true');
+    }
+
+    addToast({
+      type: 'success',
+      title: '🎉 Instalação Concluída!',
+      message: `Bem-vindo ao NextBlog CMS, ${config.adminName}!`,
+    });
+  };
+
+  const login = (email: string, password?: string) => {
+    const foundUser = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    if (foundUser) {
+      setCurrentUser(foundUser);
+      setIsAuthenticated(true);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('nextblog_is_authenticated', 'true');
+      }
+      addToast({
+        type: 'success',
+        title: 'Login efetuado com sucesso',
+        message: `Olá, ${foundUser.name}!`,
+      });
+      return true;
+    }
+    if (email.includes('admin')) {
+      setIsAuthenticated(true);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('nextblog_is_authenticated', 'true');
+      }
+      return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('nextblog_is_authenticated', 'false');
+    }
+    setActiveView('public-site');
+    addToast({
+      type: 'info',
+      title: 'Sessão Encerrada',
+      message: 'Você saiu do painel administrativo.',
+    });
+  };
+
   return (
     <CMSContext.Provider
       value={{
+        isInstalled,
+        setIsInstalled,
+        isAuthenticated,
+        setIsAuthenticated,
+        completeInstallation,
+        login,
+        logout,
         activeView,
         setActiveView,
         currentUser,

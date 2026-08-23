@@ -20,9 +20,16 @@ import { DeployManager } from '@/components/deploy/DeployManager';
 import { UserManager } from '@/components/users/UserManager';
 import { PublicSiteView } from '@/components/site-view/PublicSiteView';
 import { DocumentationView } from '@/components/docs/DocumentationView';
+import { WPInstallPage } from '@/components/setup-wizard/WPInstallPage';
+import { WPLoginPage } from '@/components/auth/WPLoginPage';
 
 function CMSAppContent() {
-  const { activeView } = useCMS();
+  const { activeView, isInstalled, isAuthenticated } = useCMS();
+
+  // If CMS has not been installed yet, force the WordPress 5-Minute Install page
+  if (!isInstalled) {
+    return <WPInstallPage />;
+  }
 
   // If the user is currently viewing the live public site, render the full public frontend view
   if (activeView === 'public-site') {
@@ -32,6 +39,11 @@ function CMSAppContent() {
   // If viewing documentation portal page
   if (activeView === 'docs') {
     return <DocumentationView />;
+  }
+
+  // If user is trying to access admin panel without being authenticated, show WordPress Login
+  if (!isAuthenticated) {
+    return <WPLoginPage />;
   }
 
   // Otherwise render within the Admin Dashboard Layout
