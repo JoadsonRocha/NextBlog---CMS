@@ -157,14 +157,38 @@ CMD ["node", "server.js"]
           </button>
           <button
             type="button"
-            onClick={() => setActivePlatform('railway')}
+            onClick={() => setActivePlatform('netlify')}
             className={`px-4 py-2.5 font-bold text-xs border-b-2 transition-all flex items-center gap-2 ${
-              activePlatform === 'railway'
+              activePlatform === 'netlify'
+                ? 'border-teal-600 text-teal-600 bg-teal-50/50'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Cloud className="w-4 h-4 text-teal-600" />
+            <span>Netlify</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActivePlatform('render')}
+            className={`px-4 py-2.5 font-bold text-xs border-b-2 transition-all flex items-center gap-2 ${
+              activePlatform === 'render'
                 ? 'border-purple-600 text-purple-600 bg-purple-50/50'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
             <Server className="w-4 h-4 text-purple-600" />
+            <span>Render.com</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActivePlatform('railway')}
+            className={`px-4 py-2.5 font-bold text-xs border-b-2 transition-all flex items-center gap-2 ${
+              activePlatform === 'railway'
+                ? 'border-indigo-600 text-indigo-600 bg-indigo-50/50'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Server className="w-4 h-4 text-indigo-600" />
             <span>Railway.app</span>
           </button>
           <button
@@ -177,7 +201,7 @@ CMD ["node", "server.js"]
             }`}
           >
             <Terminal className="w-4 h-4 text-blue-600" />
-            <span>Docker & Kubernetes</span>
+            <span>Docker & VPS</span>
           </button>
         </div>
 
@@ -186,25 +210,22 @@ CMD ["node", "server.js"]
             <span className="text-xs font-mono text-slate-400">
               {activePlatform === 'vercel'
                 ? 'vercel.json (Configuração de Rotas e Headers CORS)'
+                : activePlatform === 'netlify'
+                ? 'netlify.toml (Configuração de Build e Headers)'
+                : activePlatform === 'render'
+                ? 'render.yaml (Blueprint Infrastructure-as-Code)'
                 : 'Dockerfile (Multi-Stage Production Container)'}
             </span>
-            <button
-              type="button"
-              onClick={() =>
-                handleCopy(
-                  activePlatform === 'vercel' ? VERCEL_CONFIG : RAILWAY_DOCKERFILE,
-                  activePlatform
-                )
-              }
-              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold flex items-center gap-1.5"
-            >
-              {copied === activePlatform ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copied === activePlatform ? 'Copiado!' : 'Copiar'}</span>
-            </button>
           </div>
 
           <pre className="bg-slate-950 p-4 rounded-xl font-mono text-xs text-emerald-300 max-h-80 overflow-y-auto leading-relaxed whitespace-pre-wrap border border-slate-800">
-            {activePlatform === 'vercel' ? VERCEL_CONFIG : RAILWAY_DOCKERFILE}
+            {activePlatform === 'vercel'
+              ? VERCEL_CONFIG
+              : activePlatform === 'netlify'
+              ? `[build]\n  command = "npm run build"\n  publish = ".next"\n\n[[plugins]]\n  package = "@netlify/plugin-nextjs"`
+              : activePlatform === 'render'
+              ? `services:\n  - type: web\n    name: nextblog-cms\n    runtime: node\n    buildCommand: npm install && npm run build\n    startCommand: npm start\n    envVars:\n      - key: DATABASE_URL\n        fromDatabase:\n          name: nextblog-postgres\n          property: connectionString`
+              : RAILWAY_DOCKERFILE}
           </pre>
         </div>
       </div>
@@ -217,16 +238,16 @@ CMD ["node", "server.js"]
         </h3>
         <div className="space-y-2 text-xs font-mono">
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-            <span className="text-blue-600 font-bold">GEMINI_API_KEY</span>
-            <span className="text-slate-500 font-sans">Chave secreta de servidor para geração de conteúdo e SEO</span>
+            <span className="text-orange-600 font-bold">GROQ_API_KEY</span>
+            <span className="text-slate-500">Chave de API do Groq AI (Llama 3.3 70B) para redação e SEO</span>
           </div>
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-            <span className="text-blue-600 font-bold">DATABASE_URL</span>
-            <span className="text-slate-500 font-sans">String de conexão PostgreSQL ou MongoDB</span>
+            <span className="text-emerald-600 font-bold">DATABASE_URL</span>
+            <span className="text-slate-500">String de conexão com PostgreSQL / Supabase / Neon</span>
           </div>
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
             <span className="text-blue-600 font-bold">NEXTAUTH_SECRET</span>
-            <span className="text-slate-500 font-sans">Chave de criptografia de sessões JWT</span>
+            <span className="text-slate-500">Chave secreta para criptografia de sessões</span>
           </div>
         </div>
       </div>

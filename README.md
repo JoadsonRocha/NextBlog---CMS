@@ -26,6 +26,7 @@ Guias específicos:
 3. ✏️ **[Guia do Editor & Catálogo de 24 Blocos](docs/BLOCKS_AND_EDITOR.md)**: Guia dos blocos interativos, slash-commands e atalhos.
 4. 📈 **[SEO Avançado & Plugins](docs/SEO_AND_PLUGINS.md)**: Suíte RankPulse SEO Pro, Schema.org, sitemap e repositório de extensões.
 5. 🐍 **[Integração Python & Recursos Wagtail/Plone](docs/PYTHON_INTEGRATION.md)**: Ponto focal 2D, histórico de revisões com visual diff, workflow editorial e FastAPI vector search.
+6. 🚀 **[Guia de Deploy Multi-Nuvem](docs/DEPLOY_GUIDE.md)**: Instruções passo a passo para Vercel, Netlify, Railway, Render e Docker.
 
 ---
 
