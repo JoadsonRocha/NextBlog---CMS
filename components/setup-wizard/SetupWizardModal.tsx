@@ -196,75 +196,157 @@ export function SetupWizardModal({ isOpen, onClose }: SetupWizardModalProps) {
 
           {/* STEP 2: DATABASE CONFIG */}
           {currentStep === 2 && (
-            <div className="space-y-5">
+            <div className="space-y-6">
               <div>
-                <h3 className="text-base font-bold text-slate-900">Selecione o Provedor de Banco de Dados</h3>
-                <p className="text-slate-500">Escolha onde você deseja persistir seus posts, páginas, blocos e usuários.</p>
+                <h3 className="text-base font-bold text-slate-900">Escolha a Forma de Banco de Dados</h3>
+                <p className="text-slate-500">Selecione o método mais fácil para o seu fluxo de trabalho.</p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {[
-                  { id: 'postgres', label: 'PostgreSQL', desc: 'Supabase / Neon / Railway', icon: Database, badge: 'Recomendado' },
-                  { id: 'sqlite', label: 'SQLite / Turso', desc: 'Local ou Edge Serverless', icon: Server, badge: 'Rápido' },
-                  { id: 'mongodb', label: 'MongoDB Atlas', desc: 'NoSQL Document Store', icon: Cpu, badge: 'Mongoose' },
-                  { id: 'inmemory', label: 'In-Memory / Local', desc: 'Armazenamento no Navegador', icon: Terminal, badge: 'Demo' },
-                ].map((prov) => {
-                  const Icon = prov.icon;
-                  const isSelected = dbProvider === prov.id;
-                  return (
-                    <div
-                      key={prov.id}
-                      onClick={() => setDbProvider(prov.id as any)}
-                      className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
-                        isSelected
-                          ? 'border-blue-600 bg-blue-50/50 shadow-md ring-2 ring-blue-100'
-                          : 'border-slate-200 hover:border-slate-300 bg-white shadow-2xs'
-                      }`}
-                    >
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Icon className={`w-5 h-5 ${isSelected ? 'text-blue-600' : 'text-slate-500'}`} />
-                          <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${
-                            isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
-                          }`}>
-                            {prov.badge}
-                          </span>
-                        </div>
-                        <h4 className="font-bold text-slate-900">{prov.label}</h4>
-                      </div>
-                      <p className="text-[10px] text-slate-400 mt-2">{prov.desc}</p>
+              {/* 3 Main Quick Setup Methods */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                {/* Method 1: Vercel Storage 1-Click */}
+                <div
+                  onClick={() => {
+                    setDbProvider('postgres');
+                    if (!dbUrl) setDbUrl('process.env.DATABASE_URL (Injetado pela Vercel)');
+                  }}
+                  className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                    dbProvider === 'postgres'
+                      ? 'border-blue-600 bg-blue-50/50 shadow-md ring-2 ring-blue-100'
+                      : 'border-slate-200 hover:border-slate-300 bg-white shadow-2xs'
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Zap className="w-5 h-5 text-blue-600" />
+                      <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-blue-600 text-white">
+                        1-Click Nuvem
+                      </span>
                     </div>
-                  );
-                })}
-              </div>
-
-              <div className="space-y-3 pt-2">
-                <label className="block font-bold text-slate-700">String de Conexão (DATABASE_URL)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={dbUrl}
-                    onChange={(e) => setDbUrl(e.target.value)}
-                    placeholder="postgresql://usuario:senha@host:5432/database"
-                    className="flex-1 p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-mono text-slate-800 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleTestConnection}
-                    disabled={testingDb}
-                    className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold transition-colors shrink-0 flex items-center gap-1.5 shadow-xs"
-                  >
-                    {testingDb ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ShieldCheck className="w-3.5 h-3.5" />}
-                    <span>Testar Conexão</span>
-                  </button>
+                    <h4 className="font-bold text-slate-900 text-sm">Vercel Storage & Supabase</h4>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      Conecte na aba <strong>Storage</strong> da Vercel sem abrir terminal. A URL é injetada automaticamente.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-200/60 flex items-center gap-1 text-[10px] text-blue-700 font-bold">
+                    <span>Zero Terminal & Automático</span>
+                  </div>
                 </div>
 
-                {dbStatus === 'success' && (
-                  <p className="text-emerald-700 font-semibold flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Conexão com {dbProvider.toUpperCase()} estabelecida e migrações sincronizadas!
-                  </p>
-                )}
+                {/* Method 2: Zero Configuration / In-Memory */}
+                <div
+                  onClick={() => {
+                    setDbProvider('inmemory');
+                    setDbUrl('');
+                    setDbStatus('success');
+                  }}
+                  className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                    dbProvider === 'inmemory'
+                      ? 'border-emerald-600 bg-emerald-50/50 shadow-md ring-2 ring-emerald-100'
+                      : 'border-slate-200 hover:border-slate-300 bg-white shadow-2xs'
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Sparkles className="w-5 h-5 text-emerald-600" />
+                      <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-emerald-600 text-white">
+                        Mais Rápido
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-slate-900 text-sm">Zero Configuração (Navegador)</h4>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      Não precisa de banco agora. O CMS salva todos os artigos, páginas e temas no armazenamento reativo.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-200/60 flex items-center gap-1 text-[10px] text-emerald-700 font-bold">
+                    <span>Pronto para Usar Imediatamente</span>
+                  </div>
+                </div>
+
+                {/* Method 3: Manual SQL URL */}
+                <div
+                  onClick={() => setDbProvider('sqlite')}
+                  className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                    dbProvider === 'sqlite' || dbProvider === 'mongodb'
+                      ? 'border-purple-600 bg-purple-50/50 shadow-md ring-2 ring-purple-100'
+                      : 'border-slate-200 hover:border-slate-300 bg-white shadow-2xs'
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Database className="w-5 h-5 text-purple-600" />
+                      <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-purple-600 text-white">
+                        Personalizado
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-slate-900 text-sm">String de Conexão Própria</h4>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      Cole a URL do seu Neon, Railway, SQLite local ou MongoDB Atlas com teste de conexão.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-200/60 flex items-center gap-1 text-[10px] text-purple-700 font-bold">
+                    <span>PostgreSQL, SQLite ou Mongo</span>
+                  </div>
+                </div>
               </div>
+
+              {/* Dynamic details based on choice */}
+              {dbProvider === 'postgres' && (
+                <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-2xl space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-blue-900 text-xs flex items-center gap-1.5">
+                      <Zap className="w-4 h-4 text-blue-600" />
+                      Como ativar o banco em 1 clique na Vercel Storage:
+                    </span>
+                    <a
+                      href="https://vercel.com/dashboard"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold text-[11px] flex items-center gap-1 hover:bg-blue-500 transition-colors shadow-2xs"
+                    >
+                      <span>Abrir Vercel Storage</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                  <ol className="list-decimal list-inside space-y-1 text-slate-700 text-[11px] pl-1">
+                    <li>Acesse seu projeto na Vercel e clique na aba <strong>Storage</strong>.</li>
+                    <li>Clique em <strong>Connect Store</strong> e selecione <strong>Supabase</strong> ou <strong>Neon</strong>.</li>
+                    <li>A Vercel injeta a <code>DATABASE_URL</code> automaticamente nas variáveis de ambiente.</li>
+                  </ol>
+                </div>
+              )}
+
+              {dbProvider !== 'inmemory' && (
+                <div className="space-y-3 pt-1">
+                  <label className="block font-bold text-slate-700 text-xs">
+                    String de Conexão (DATABASE_URL)
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={dbUrl}
+                      onChange={(e) => setDbUrl(e.target.value)}
+                      placeholder="postgresql://usuario:senha@host:5432/database"
+                      className="flex-1 p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-mono text-xs text-slate-800 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleTestConnection}
+                      disabled={testingDb}
+                      className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold transition-colors shrink-0 flex items-center gap-1.5 shadow-xs text-xs"
+                    >
+                      {testingDb ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ShieldCheck className="w-3.5 h-3.5" />}
+                      <span>Testar Conexão</span>
+                    </button>
+                  </div>
+
+                  {dbStatus === 'success' && (
+                    <p className="text-emerald-700 font-semibold flex items-center gap-1 text-xs">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Banco configurado e validado com sucesso!
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
