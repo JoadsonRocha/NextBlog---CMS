@@ -186,23 +186,34 @@ let postCounter = 0;
 let pageCounter = 0;
 
 export function CMSProvider({ children }: { children: ReactNode }) {
-  const [activeView, setActiveView] = useState<AdminView>('dashboard');
-  const [users, setUsers] = useState<User[]>(INITIAL_USERS);
-  const [currentUser, setCurrentUser] = useState<User>(INITIAL_USERS[0]); // Default Admin
-
-  // Installation & Authentication Status (WordPress Style)
-  const [isInstalled, setIsInstalled] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('nextblog_is_installed');
-      if (saved === 'false') return false;
-      return true;
-    }
-    return true;
-  });
-
+  // Check auth state from localStorage (default false for anonymous/guests)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('nextblog_is_authenticated');
+      return saved === 'true';
+    }
+    return false;
+  });
+
+  // Default view is public-site for visitors/guests
+  const [activeView, setActiveView] = useState<AdminView>(() => {
+    if (typeof window !== 'undefined') {
+      const isAuth = localStorage.getItem('nextblog_is_authenticated') === 'true';
+      if (isAuth) {
+        const savedView = localStorage.getItem('nextblog_active_view');
+        return (savedView as AdminView) || 'dashboard';
+      }
+    }
+    return 'public-site';
+  });
+
+  const [users, setUsers] = useState<User[]>(INITIAL_USERS);
+  const [currentUser, setCurrentUser] = useState<User>(INITIAL_USERS[0]);
+
+  // Installation Status (defaults to true or saved state)
+  const [isInstalled, setIsInstalled] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nextblog_is_installed');
       if (saved === 'false') return false;
       return true;
     }

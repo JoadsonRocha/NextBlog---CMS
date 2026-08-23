@@ -3,33 +3,13 @@ import { Page, Post, ReusableBlock, Category, MediaItem, User, GlobalSettings, C
 export const INITIAL_USERS: User[] = [
   {
     id: 'usr_admin',
-    name: 'Ana Silva',
-    email: 'ana.silva@empresa.com',
+    name: 'Administrador Master',
+    email: 'admin@nextblog.com',
     role: 'admin',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-    bio: 'Administradora de Sistemas e Tech Lead. Responsável pela arquitetura do CMS e infraestrutura.',
-    status: 'active',
-    createdAt: '2026-01-10T09:00:00Z',
-  },
-  {
-    id: 'usr_editor',
-    name: 'Carlos Mendes',
-    email: 'carlos.mendes@empresa.com',
-    role: 'editor',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    bio: 'Editor Chefe de Conteúdo & Copywriter com mais de 8 anos criando narrativas digitais.',
+    bio: 'Super Administrador do NextBlog CMS.',
     status: 'active',
-    createdAt: '2026-02-01T14:30:00Z',
-  },
-  {
-    id: 'usr_visitor',
-    name: 'Visitante / Leitor',
-    email: 'leitor@exemplo.com',
-    role: 'visitor',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-    bio: 'Usuário final navegando pelo site público e interagindo com conteúdos.',
-    status: 'active',
-    createdAt: '2026-03-01T18:00:00Z',
+    createdAt: '2026-01-01T00:00:00Z',
   },
 ];
 

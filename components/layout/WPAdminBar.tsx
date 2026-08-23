@@ -38,6 +38,7 @@ export function WPAdminBar() {
     createNewPage,
     setPublicRoute,
     logout,
+    isAuthenticated,
   } = useCMS();
 
   const [newDropdownOpen, setNewDropdownOpen] = useState(false);
@@ -52,6 +53,41 @@ export function WPAdminBar() {
     setActiveView('public-site');
     setSiteDropdownOpen(false);
   };
+
+  // If visitor is NOT logged in, show a clean top bar without exposing admin management tools
+  if (!isAuthenticated) {
+    return (
+      <header
+        id="wp-admin-bar"
+        className="h-8 bg-[#1d2327] text-[#f0f0f1] text-[12px] px-4 flex items-center justify-between z-50 select-none border-b border-[#2c3338] shrink-0 font-sans"
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center font-black text-[9px] text-white">
+            W
+          </div>
+          <span className="font-bold text-slate-300">{settings.siteName || 'NextBlog'}</span>
+          <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">• Modo Visitante</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setActiveView('docs')}
+            className="px-2.5 py-0.5 rounded text-xs font-semibold text-slate-300 hover:text-white hover:bg-[#2c3338] transition-colors"
+          >
+            Documentação
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveView('dashboard')}
+            className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold transition-colors flex items-center gap-1 shadow-xs"
+          >
+            <span>🔒 Acessar Painel Admin</span>
+          </button>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header
