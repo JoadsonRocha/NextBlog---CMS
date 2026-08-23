@@ -7,6 +7,7 @@ import { WPAdminBar } from '@/components/layout/WPAdminBar';
 import {
   LayoutDashboard,
   FileText,
+  BookOpen,
   Layers,
   BookmarkCheck,
   Image as ImageIcon,
@@ -81,6 +82,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     { view: 'api-explorer', label: 'APIs REST & GraphQL', icon: Zap, badge: 'API' },
     { view: 'database', label: 'Banco de Dados', icon: Database },
     { view: 'deploy', label: 'Deploy & Produção', icon: Rocket },
+    { view: 'docs', label: 'Documentação', icon: BookOpen, badge: 'v2.4', badgeColor: 'bg-blue-600 text-white' },
   ];
 
   const handleNavClick = (view: AdminView) => {

@@ -42,7 +42,7 @@ export interface ToastMessage {
 }
 
 export interface PublicRoute {
-  type: 'page' | 'post' | 'blog';
+  type: 'page' | 'post' | 'blog' | 'docs';
   slug?: string;
 }
 

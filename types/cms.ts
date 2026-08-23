@@ -28,6 +28,7 @@ export type AdminView =
   | 'api-explorer'
   | 'database'
   | 'deploy'
+  | 'docs'
   | 'public-site';
 
 export interface Comment {

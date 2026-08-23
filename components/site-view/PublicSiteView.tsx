@@ -204,6 +204,15 @@ export function PublicSiteView() {
             >
               Blog & Artigos
             </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveView('docs')}
+              className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors flex items-center gap-1"
+            >
+              <span>Documentação</span>
+              <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-blue-100 text-blue-700">v2.4</span>
+            </button>
           </nav>
 
           {/* Action */}

@@ -19,6 +19,7 @@ import { DatabaseManager } from '@/components/database/DatabaseManager';
 import { DeployManager } from '@/components/deploy/DeployManager';
 import { UserManager } from '@/components/users/UserManager';
 import { PublicSiteView } from '@/components/site-view/PublicSiteView';
+import { DocumentationView } from '@/components/docs/DocumentationView';
 
 function CMSAppContent() {
   const { activeView } = useCMS();
@@ -26,6 +27,11 @@ function CMSAppContent() {
   // If the user is currently viewing the live public site, render the full public frontend view
   if (activeView === 'public-site') {
     return <PublicSiteView />;
+  }
+
+  // If viewing documentation portal page
+  if (activeView === 'docs') {
+    return <DocumentationView />;
   }
 
   // Otherwise render within the Admin Dashboard Layout
