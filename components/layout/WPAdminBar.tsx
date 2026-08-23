@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useCMS } from '@/lib/cms-context';
+import { SetupWizardModal } from '@/components/setup-wizard/SetupWizardModal';
 import {
   Globe,
   Plus,
@@ -21,6 +22,7 @@ import {
   Paintbrush,
   Puzzle,
   RotateCw,
+  Wand2,
 } from 'lucide-react';
 
 export function WPAdminBar() {
@@ -39,6 +41,7 @@ export function WPAdminBar() {
   const [newDropdownOpen, setNewDropdownOpen] = useState(false);
   const [siteDropdownOpen, setSiteDropdownOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   const pendingCommentsCount = comments.filter((c) => c.status === 'pending').length;
 
@@ -217,10 +220,21 @@ export function WPAdminBar() {
           )}
         </button>
 
+        {/* Setup Wizard Button (WordPress Style) */}
+        <button
+          type="button"
+          onClick={() => setIsWizardOpen(true)}
+          className="flex items-center gap-1.5 px-2 py-1 bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 hover:text-white rounded text-xs font-bold transition-colors border border-purple-500/30 shadow-2xs"
+          title="Assistente de Instalação e Configuração Rápida"
+        >
+          <Wand2 className="w-3.5 h-3.5 text-amber-300" />
+          <span className="hidden sm:inline">Assistente (Wizard)</span>
+        </button>
+
         {/* AI Model Status Badge */}
-        <div className="hidden lg:flex items-center gap-1 px-2 py-1 bg-[#2c3338]/80 text-blue-300 rounded text-[11px] font-medium border border-blue-500/20">
-          <Sparkles className="w-3 h-3 text-amber-400" />
-          <span>Gemini 3.7 Flash Ativo</span>
+        <div className="hidden lg:flex items-center gap-1 px-2 py-1 bg-[#2c3338]/80 text-orange-300 rounded text-[11px] font-medium border border-orange-500/20">
+          <Sparkles className="w-3 h-3 text-orange-400" />
+          <span>Groq Llama 3.3 Ativo</span>
         </div>
       </div>
 
@@ -303,6 +317,9 @@ export function WPAdminBar() {
           </div>
         </div>
       </div>
+
+      {/* Setup Wizard Modal (WordPress 5-Min Installer) */}
+      <SetupWizardModal isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} />
     </header>
   );
 }

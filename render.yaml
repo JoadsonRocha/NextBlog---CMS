@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: nextblog-cms
+    runtime: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.10.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nextblog-postgres
+          property: connectionString
+      - key: GROQ_API_KEY
+        sync: false
+
+databases:
+  - name: nextblog-postgres
+    plan: free
+    databaseName: nextblog_db
+    user: nextblog_user
