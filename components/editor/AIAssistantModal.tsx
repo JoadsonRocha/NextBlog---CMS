@@ -51,7 +51,7 @@ export function AIAssistantModal({ isOpen, onClose, onApplyGeneratedPost, onAppl
         payload = { action: 'rewrite_text', currentText: textToRewrite, tone: rewriteTone };
       }
 
-      const res = await fetch('/api/gemini/generate-content', {
+      const res = await fetch('/api/groq/generate-content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -59,14 +59,14 @@ export function AIAssistantModal({ isOpen, onClose, onApplyGeneratedPost, onAppl
 
       const json = await res.json();
       if (!res.ok || json.error) {
-        throw new Error(json.error || 'Falha ao gerar conteúdo com IA');
+        throw new Error(json.error || 'Falha ao gerar conteúdo com IA da Groq');
       }
 
       setGeneratedData(json.data || json.result);
-      addToast({ type: 'success', title: 'Conteúdo gerado com IA com sucesso!' });
+      addToast({ type: 'success', title: 'Conteúdo gerado via Groq (Llama 3.3 70B) com sucesso!' });
     } catch (err: any) {
       console.error(err);
-      addToast({ type: 'error', title: 'Erro ao chamar Gemini API', message: err.message });
+      addToast({ type: 'error', title: 'Erro ao chamar Groq API', message: err.message });
     } finally {
       setLoading(false);
     }
@@ -91,19 +91,19 @@ export function AIAssistantModal({ isOpen, onClose, onApplyGeneratedPost, onAppl
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-slate-200 flex flex-col max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-linear-to-r from-blue-900 to-indigo-900 text-white">
+        <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-linear-to-r from-orange-600 via-amber-600 to-indigo-900 text-white">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-white/10 text-amber-300">
+            <div className="p-2 rounded-lg bg-white/10 text-amber-200 shadow-xs">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-lg font-bold flex items-center gap-2">
                 Assistente de Conteúdo IA
-                <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-blue-500/30 text-blue-200 border border-blue-400/30">
-                  Gemini 3.7 Flash
+                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30">
+                  ⚡ Groq Llama 3.3 70B
                 </span>
               </h2>
-              <p className="text-xs text-blue-200">Gere artigos estruturados com blocos, reescreva textos e crie seções prontas</p>
+              <p className="text-xs text-orange-100">Geração ultra-rápida de artigos estruturados em blocos, SEO e seções com Groq</p>
             </div>
           </div>
           <button

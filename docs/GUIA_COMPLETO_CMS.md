@@ -130,13 +130,13 @@ No menu lateral -> **Aparência**:
 
 ---
 
-## 6. Inteligência Artificial Integrada (Google Gemini)
+## 6. Inteligência Artificial Integrada (⚡ Groq AI — Llama 3.3 70B)
 
-O modal **Assistente IA** (`Ctrl + I` no editor) permite:
-* **Geração de Artigos Completos**: Forneça um tópico ou palavra-chave e a IA estruturará o título, introdução, seções temáticas em blocos e conclusão.
+O modal **Assistente IA** (`Ctrl + I` no editor) opera através da **Groq LPU** com velocidades ultrarrápidas (< 1s) e permite:
+* **Geração de Artigos Completos**: Forneça um tópico ou palavra-chave e o modelo `llama-3.3-70b-versatile` estruturará o título, resumo, seções temáticas em blocos Notion e conclusão.
 * **Reescrita e Tom de Voz**: Alterne o texto entre tons *Profissional, Persuasivo, Didático, Técnico ou Descontraído*.
 * **Geração de Títulos & SEO**: Sugestões automáticas de títulos chamativos e meta descrições otimizadas para cliques (CTR).
-* **Tradução Multilíngue**: Traduza conteúdos inteiros para Inglês, Espanhol, Francês e Alemão mantendo a estrutura de blocos.
+* **Criação de Blocos Individuais**: Gera dados estruturados prontos para blocos de FAQ, Tabela de Preços, Depoimentos, Callout e Linha do Tempo.
 
 ---
 

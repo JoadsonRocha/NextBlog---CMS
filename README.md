@@ -10,7 +10,7 @@
 * 🔵 **Strapi**: Arquitetura Headless API-first com endpoints REST (`/api/posts`, `/api/pages`), endpoint GraphQL (`/api/graphql`), API Explorer interativo e suporte a múltiplos bancos (PostgreSQL, MongoDB, SQLite).
 * 👻 **Ghost**: Performance nativa em Next.js 15 (ISR / SSG), SEO integrado com Schema.org JSON-LD, sitemap.xml, robots.txt e experiência editorial minimalista e ultrarrápida.
 * ⬛ **Notion**: Editor modular com **24 tipos de blocos interativos**, menu flutuante de **Slash Commands (`/`)**, drag-and-drop, atalhos de teclado e biblioteca de blocos reutilizáveis.
-* 🤖 **Google Gemini IA**: Assistente de inteligência artificial embutido para redação, reescrita, tradução e geração de SEO.
+* ⚡ **Groq AI (Llama 3.3 70B)**: Assistente de inteligência artificial em tempo real (< 1s) para redação de posts em blocos, reescrita de tom de voz, tradução e SEO automático.
 
 ---
 
@@ -25,6 +25,7 @@ Guias específicos:
 2. 🗄️ **[Integração com Bancos de Dados](docs/DATABASE_INTEGRATION.md)**: Configuração de PostgreSQL, SQLite e MongoDB com Prisma, Drizzle e Mongoose.
 3. ✏️ **[Guia do Editor & Catálogo de 24 Blocos](docs/BLOCKS_AND_EDITOR.md)**: Guia dos blocos interativos, slash-commands e atalhos.
 4. 📈 **[SEO Avançado & Plugins](docs/SEO_AND_PLUGINS.md)**: Suíte RankPulse SEO Pro, Schema.org, sitemap e repositório de extensões.
+5. 🐍 **[Integração Python & Recursos Wagtail/Plone](docs/PYTHON_INTEGRATION.md)**: Ponto focal 2D, histórico de revisões com visual diff, workflow editorial e FastAPI vector search.
 
 ---
 
@@ -34,7 +35,7 @@ Guias específicos:
 * **Linguagem & UI**: React 19, TypeScript 5.9
 * **Estilização**: Tailwind CSS v4, Lucide React, Motion
 * **ORM & Bancos**: Prisma ORM, Drizzle ORM, Mongoose (MongoDB)
-* **Inteligência Artificial**: Google Gemini 2.4 (`@google/genai`)
+* **Inteligência Artificial**: Groq AI (Llama 3.3 70B Versatile & Llama 3.1 8B Instant)
 
 ---
 

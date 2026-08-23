@@ -290,18 +290,18 @@ export function SettingsManager() {
           </div>
         )}
 
-        {/* TAB: AI GEMINI */}
+        {/* TAB: AI GROQ */}
         {activeTab === 'ai' && (
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6">
             <h3 className="font-bold text-sm text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>Configurações do Gemini AI Studio (Server-Side)</span>
+              <Sparkles className="w-4 h-4 text-orange-500" />
+              <span>Configurações do Groq AI (Llama 3.3 70B Ultra-Fast)</span>
             </h3>
 
-            <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-100 text-xs text-blue-900 space-y-1">
-              <p className="font-bold">Segurança e Chave de API:</p>
+            <div className="p-4 rounded-xl bg-orange-50/70 border border-orange-100 text-xs text-orange-950 space-y-1">
+              <p className="font-bold">⚡ Velocidade Ultra-Rápida via Groq LPU:</p>
               <p>
-                A chave do Gemini opera exclusivamente no lado do servidor via rotas Next.js App Router API, sem exposição pública.
+                A chave <code className="font-mono bg-white px-1 py-0.5 rounded border border-orange-200">GROQ_API_KEY</code> opera exclusivamente no lado do servidor via Next.js App Router API, entregando respostas em menos de 1 segundo.
               </p>
             </div>
 
@@ -309,12 +309,13 @@ export function SettingsManager() {
               <label className="text-xs font-bold text-slate-700 sm:text-right">Modelo Principal</label>
               <div className="sm:col-span-2">
                 <select
-                  value={formData.aiModel}
+                  value={formData.aiModel || 'llama-3.3-70b-versatile'}
                   onChange={(e) => setFormData({ ...formData, aiModel: e.target.value })}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 font-mono"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 font-mono"
                 >
-                  <option value="gemini-3.7-flash">gemini-3.7-flash (Velocidade & Redação Inteligente)</option>
-                  <option value="gemini-2.5-pro">gemini-2.5-pro (Raciocínio Complexo & SEO Avançado)</option>
+                  <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (Recomendado — Alta Inteligência & Redação)</option>
+                  <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (Velocidade Extrema)</option>
+                  <option value="mixtral-8x7b-32768">mixtral-8x7b-32768 (Contexto Longo)</option>
                 </select>
               </div>
             </div>
