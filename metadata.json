@@ -1,0 +1,7 @@
+{
+  "name": "NextBlock CMS",
+  "description": "CMS moderno e visual inspirado no WordPress, com editor drag-and-drop de blocos, gestão de posts/páginas, API REST/GraphQL e IA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
