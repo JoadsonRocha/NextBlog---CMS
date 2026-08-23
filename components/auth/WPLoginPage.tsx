@@ -22,7 +22,8 @@ interface WPLoginPageProps {
 export function WPLoginPage({ onSuccess }: WPLoginPageProps) {
   const { login, settings, setPublicRoute, setActiveView, users } = useCMS();
 
-  const [email, setEmail] = useState('admin@nextblog.com');
+  const masterAdmin = users.find((u) => u.role === 'admin') || users[0];
+  const [email, setEmail] = useState(masterAdmin?.email || 'admin@nextblog.com');
   const [password, setPassword] = useState('admin123');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
