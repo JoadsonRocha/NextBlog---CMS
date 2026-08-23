@@ -199,7 +199,28 @@ export function SEOInspectorModal({ isOpen, onClose, item, isPost }: SEOInspecto
           {activeTab === 'general' && (
             <div className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Palavra-chave Foco</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="font-bold text-slate-700">Palavra-chave Foco</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const baseKw = keyword || item.title.split(' ').slice(0, 3).join(' ');
+                      const optimalTitle = `${item.title.length > 50 ? item.title.slice(0, 48) + '...' : item.title} | Guia Completo`;
+                      const optimalDesc = `Aprenda tudo sobre ${baseKw || 'este tópico'}: estratégias práticas, dicas essenciais e guia passo a passo completo atualizado para 2026.`;
+                      setKeyword(baseKw);
+                      handleUpdate({
+                        metaTitle: optimalTitle,
+                        metaDescription: optimalDesc,
+                        keywords: [baseKw],
+                      });
+                      addToast({ type: 'success', title: 'SEO otimizado automaticamente com IA!', message: 'Título e meta descrição ajustados para pontuação máxima.' });
+                    }}
+                    className="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <Sparkles className="w-3 h-3 text-blue-600" />
+                    <span>Auto-Otimizar com IA</span>
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={keyword}

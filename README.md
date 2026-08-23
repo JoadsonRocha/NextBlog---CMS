@@ -16,8 +16,11 @@
 
 ## 📚 Documentação Técnica Completa
 
-Para aprofundar na arquitetura e desenvolvimento, consulte os guias na pasta `docs/`:
+Para um guia passo a passo completo e aprofundado, consulte:
 
+* 📖 **[Manual & Documentação Completa do NextBlog CMS (GUIA_COMPLETO_CMS.md)](docs/GUIA_COMPLETO_CMS.md)**
+
+Guias específicos:
 1. 🏛️ **[Arquitetura do Sistema](docs/ARCHITECTURE.md)**: Visão técnica do sistema híbrido, árvore de componentes e fluxo de reatividade.
 2. 🗄️ **[Integração com Bancos de Dados](docs/DATABASE_INTEGRATION.md)**: Configuração de PostgreSQL, SQLite e MongoDB com Prisma, Drizzle e Mongoose.
 3. ✏️ **[Guia do Editor & Catálogo de 24 Blocos](docs/BLOCKS_AND_EDITOR.md)**: Guia dos blocos interativos, slash-commands e atalhos.

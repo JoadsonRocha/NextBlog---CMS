@@ -93,15 +93,59 @@ export function PublicSiteView() {
     });
   };
 
-  const handleShare = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
-      addToast({ type: 'success', title: 'Link copiado para a área de transferência!' });
     }
   };
 
+  // Structured Schema.org for the active public view
+  const siteUrl = 'https://nextblog-cms.vercel.app';
+  const currentUrl = isSinglePost
+    ? `${siteUrl}/blog/${currentPost?.slug}`
+    : isSinglePage
+    ? `${siteUrl}/${currentPage?.slug === 'home' ? '' : currentPage?.slug}`
+    : `${siteUrl}/blog`;
+
+  const pageSchema = isSinglePost && currentPost
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: currentPost.seo?.metaTitle || currentPost.title,
+        description: currentPost.seo?.metaDescription || currentPost.excerpt,
+        image: currentPost.seo?.ogImage || currentPost.featuredImage,
+        datePublished: currentPost.publishedAt || currentPost.createdAt,
+        dateModified: currentPost.updatedAt || currentPost.createdAt,
+        author: {
+          '@type': 'Person',
+          name: currentPost.authorName,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: settings.siteName,
+          logo: {
+            '@type': 'ImageObject',
+            url: `${siteUrl}/logo.png`,
+          },
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': currentUrl,
+        },
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: currentPage?.title || settings.siteName,
+        description: currentPage?.description || settings.siteDescription,
+        url: currentUrl,
+      };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-blue-100 selection:text-blue-900 font-sans">
+      {/* Dynamic In-Page Schema.org Injection for Rich Snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }}
+      />
+
       {/* WordPress Admin Top Bar */}
       <WPAdminBar />
 
