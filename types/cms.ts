@@ -101,7 +101,13 @@ export type BlockType =
   | 'stats'
   | 'divider'
   | 'spacer'
-  | 'custom_html';
+  | 'custom_html'
+  | 'callout'
+  | 'timeline'
+  | 'tabs'
+  | 'poll'
+  | 'embed'
+  | 'audio';
 
 export interface BlockStyles {
   textAlign?: 'left' | 'center' | 'right' | 'justify';
