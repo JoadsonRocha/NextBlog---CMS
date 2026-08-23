@@ -437,6 +437,15 @@ export function DatabaseManager() {
               </button>
               <button
                 type="button"
+                onClick={() => setActiveTab('drizzle' as any)}
+                className={`px-3 py-1 rounded font-semibold ${
+                  activeTab === ('drizzle' as any) ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Drizzle ORM
+              </button>
+              <button
+                type="button"
                 onClick={() => setActiveTab('mongoose')}
                 className={`px-3 py-1 rounded font-semibold ${
                   activeTab === 'mongoose' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
@@ -454,6 +463,28 @@ export function DatabaseManager() {
                     ? POSTGRESQL_DDL
                     : activeTab === 'prisma'
                     ? PRISMA_SCHEMA
+                    : activeTab === ('drizzle' as any)
+                    ? `// lib/db/drizzle/schema.ts
+import { pgTable, text, timestamp, integer, boolean, json } from 'drizzle-orm/pg-core';
+
+export const users = pgTable('users', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  role: text('role').notNull().default('editor'),
+});
+
+export const posts = pgTable('posts', {
+  id: text('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  title: text('title').notNull(),
+  excerpt: text('excerpt'),
+  status: text('status').notNull().default('draft'),
+  blocks: json('blocks').$type<any[]>().default([]),
+  metaTitle: text('meta_title'),
+  metaDescription: text('meta_description'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});`
                     : MONGOOSE_SCHEMA
                 )
               }
@@ -468,6 +499,29 @@ export function DatabaseManager() {
         <pre className="bg-slate-950 p-4 rounded-xl font-mono text-xs text-blue-300 max-h-96 overflow-y-auto leading-relaxed whitespace-pre-wrap border border-slate-800">
           {activeTab === 'postgresql' && POSTGRESQL_DDL}
           {activeTab === 'prisma' && PRISMA_SCHEMA}
+          {activeTab === ('drizzle' as any) && `// lib/db/drizzle/schema.ts (Drizzle ORM)
+// Execute: npx drizzle-kit push:pg
+import { pgTable, text, timestamp, integer, boolean, json, index } from 'drizzle-orm/pg-core';
+
+export const users = pgTable('users', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  role: text('role').notNull().default('editor'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export const posts = pgTable('posts', {
+  id: text('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  title: text('title').notNull(),
+  excerpt: text('excerpt'),
+  status: text('status').notNull().default('draft'),
+  blocks: json('blocks').$type<any[]>().default([]),
+  metaTitle: text('meta_title'),
+  metaDescription: text('meta_description'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});`}
           {activeTab === 'mongoose' && MONGOOSE_SCHEMA}
         </pre>
       </div>

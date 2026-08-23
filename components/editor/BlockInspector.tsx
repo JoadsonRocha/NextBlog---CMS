@@ -400,6 +400,317 @@ export function BlockInspector({ block, onClose }: BlockInspectorProps) {
                 />
               </div>
             )}
+
+            {block.type === 'callout' && (
+              <>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Tom Visual do Destaque</label>
+                  <select
+                    value={block.content.tone || 'info'}
+                    onChange={(e) => handleContentChange('tone', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs font-semibold"
+                  >
+                    <option value="info">Azul (Informação / Dica)</option>
+                    <option value="warning">Âmbar (Aviso / Atenção)</option>
+                    <option value="success">Verde (Sucesso / Concluído)</option>
+                    <option value="error">Vermelho (Alerta / Erro)</option>
+                    <option value="tip">Roxo (Insight / Criativo)</option>
+                    <option value="neutral">Cinza Neutro (Minimalista)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Título do Destaque</label>
+                  <input
+                    type="text"
+                    value={block.content.title || ''}
+                    onChange={(e) => handleContentChange('title', e.target.value)}
+                    placeholder="Ex: Nota Importante"
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Texto Informativo</label>
+                  <textarea
+                    rows={4}
+                    value={block.content.text || ''}
+                    onChange={(e) => handleContentChange('text', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  />
+                </div>
+              </>
+            )}
+
+            {block.type === 'timeline' && (
+              <>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Título do Roadmap</label>
+                  <input
+                    type="text"
+                    value={block.content.title || ''}
+                    onChange={(e) => handleContentChange('title', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Subtítulo</label>
+                  <input
+                    type="text"
+                    value={block.content.subtitle || ''}
+                    onChange={(e) => handleContentChange('subtitle', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  />
+                </div>
+                <div className="pt-2 border-t border-slate-100">
+                  <span className="block font-bold text-slate-700 text-xs mb-2">Marcos da Timeline</span>
+                  <div className="space-y-3">
+                    {(block.content.items || []).map((item: any, idx: number) => (
+                      <div key={idx} className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1.5">
+                        <input
+                          type="text"
+                          value={item.title || ''}
+                          onChange={(e) => {
+                            const newItems = [...(block.content.items || [])];
+                            newItems[idx] = { ...newItems[idx], title: e.target.value };
+                            handleContentChange('items', newItems);
+                          }}
+                          placeholder="Título do Marco"
+                          className="w-full p-1.5 rounded border border-slate-300 bg-white font-semibold"
+                        />
+                        <div className="grid grid-cols-2 gap-1.5">
+                          <input
+                            type="text"
+                            value={item.date || ''}
+                            onChange={(e) => {
+                              const newItems = [...(block.content.items || [])];
+                              newItems[idx] = { ...newItems[idx], date: e.target.value };
+                              handleContentChange('items', newItems);
+                            }}
+                            placeholder="Data (ex: Jan 2026)"
+                            className="w-full p-1.5 rounded border border-slate-300 bg-white text-[11px]"
+                          />
+                          <select
+                            value={item.status || 'done'}
+                            onChange={(e) => {
+                              const newItems = [...(block.content.items || [])];
+                              newItems[idx] = { ...newItems[idx], status: e.target.value };
+                              handleContentChange('items', newItems);
+                            }}
+                            className="w-full p-1.5 rounded border border-slate-300 bg-white text-[11px]"
+                          >
+                            <option value="done">Concluído</option>
+                            <option value="active">Em Progresso</option>
+                            <option value="upcoming">Planejado</option>
+                          </select>
+                        </div>
+                        <input
+                          type="text"
+                          value={item.description || ''}
+                          onChange={(e) => {
+                            const newItems = [...(block.content.items || [])];
+                            newItems[idx] = { ...newItems[idx], description: e.target.value };
+                            handleContentChange('items', newItems);
+                          }}
+                          placeholder="Breve descrição"
+                          className="w-full p-1.5 rounded border border-slate-300 bg-white text-[11px]"
+                        />
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newItems = [...(block.content.items || []), { title: 'Novo Marco', date: 'Q3 2026', description: 'Descrição da etapa', status: 'upcoming', tag: 'Novo' }];
+                        handleContentChange('items', newItems);
+                      }}
+                      className="w-full py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                    >
+                      + Adicionar Marco
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {block.type === 'tabs' && (
+              <>
+                <span className="block font-bold text-slate-700 text-xs mb-2">Abas do Bloco</span>
+                <div className="space-y-3">
+                  {(block.content.tabs || []).map((tab: any, idx: number) => (
+                    <div key={idx} className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1.5">
+                      <div className="flex gap-1.5">
+                        <input
+                          type="text"
+                          value={tab.label || ''}
+                          onChange={(e) => {
+                            const newTabs = [...(block.content.tabs || [])];
+                            newTabs[idx] = { ...newTabs[idx], label: e.target.value };
+                            handleContentChange('tabs', newTabs);
+                          }}
+                          placeholder="Nome da Aba"
+                          className="flex-1 p-1.5 rounded border border-slate-300 bg-white font-bold"
+                        />
+                        <input
+                          type="text"
+                          value={tab.badge || ''}
+                          onChange={(e) => {
+                            const newTabs = [...(block.content.tabs || [])];
+                            newTabs[idx] = { ...newTabs[idx], badge: e.target.value };
+                            handleContentChange('tabs', newTabs);
+                          }}
+                          placeholder="Badge"
+                          className="w-20 p-1.5 rounded border border-slate-300 bg-white text-[11px]"
+                        />
+                      </div>
+                      <textarea
+                        rows={3}
+                        value={tab.content || ''}
+                        onChange={(e) => {
+                          const newTabs = [...(block.content.tabs || [])];
+                          newTabs[idx] = { ...newTabs[idx], content: e.target.value };
+                          handleContentChange('tabs', newTabs);
+                        }}
+                        placeholder="Conteúdo exibido nesta aba..."
+                        className="w-full p-1.5 rounded border border-slate-300 bg-white text-[11px]"
+                      />
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newTabs = [...(block.content.tabs || []), { id: `tab_${Date.now()}`, label: 'Nova Aba', content: 'Conteúdo descritivo da nova aba.' }];
+                      handleContentChange('tabs', newTabs);
+                    }}
+                    className="w-full py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                  >
+                    + Adicionar Nova Aba
+                  </button>
+                </div>
+              </>
+            )}
+
+            {block.type === 'poll' && (
+              <>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Pergunta da Enquete</label>
+                  <input
+                    type="text"
+                    value={block.content.question || ''}
+                    onChange={(e) => handleContentChange('question', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs font-bold"
+                  />
+                </div>
+                <div className="pt-2 border-t border-slate-100">
+                  <span className="block font-bold text-slate-700 text-xs mb-2">Opções de Voto</span>
+                  <div className="space-y-2">
+                    {(block.content.options || []).map((opt: any, idx: number) => (
+                      <div key={opt.id || idx} className="flex gap-2">
+                        <input
+                          type="text"
+                          value={opt.text || ''}
+                          onChange={(e) => {
+                            const newOptions = [...(block.content.options || [])];
+                            newOptions[idx] = { ...newOptions[idx], text: e.target.value };
+                            handleContentChange('options', newOptions);
+                          }}
+                          placeholder={`Opção ${idx + 1}`}
+                          className="flex-1 p-1.5 rounded border border-slate-300 bg-white text-xs"
+                        />
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newOptions = [...(block.content.options || []), { id: `opt_${Date.now()}`, text: 'Nova Opção', votes: 0 }];
+                        handleContentChange('options', newOptions);
+                      }}
+                      className="w-full py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold"
+                    >
+                      + Adicionar Opção
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {block.type === 'embed' && (
+              <>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Provedor de Mídia</label>
+                  <select
+                    value={block.content.provider || 'youtube'}
+                    onChange={(e) => handleContentChange('provider', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  >
+                    <option value="youtube">YouTube Vídeo</option>
+                    <option value="spotify">Spotify Playlist / Podcast</option>
+                    <option value="figma">Figma Protótipo</option>
+                    <option value="codesandbox">CodeSandbox</option>
+                    <option value="custom">Iframe Personalizado</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">URL de Compartilhamento / Embed</label>
+                  <input
+                    type="text"
+                    value={block.content.url || ''}
+                    onChange={(e) => handleContentChange('url', e.target.value)}
+                    placeholder="https://..."
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Legenda Opcional</label>
+                  <input
+                    type="text"
+                    value={block.content.caption || ''}
+                    onChange={(e) => handleContentChange('caption', e.target.value)}
+                    placeholder="Ex: Protótipo interativo no Figma"
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  />
+                </div>
+              </>
+            )}
+
+            {block.type === 'audio' && (
+              <>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Título do Áudio / Episódio</label>
+                  <input
+                    type="text"
+                    value={block.content.title || ''}
+                    onChange={(e) => handleContentChange('title', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Apresentador / Autor</label>
+                  <input
+                    type="text"
+                    value={block.content.author || ''}
+                    onChange={(e) => handleContentChange('author', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Duração (ex: 18:45)</label>
+                  <input
+                    type="text"
+                    value={block.content.duration || '24:00'}
+                    onChange={(e) => handleContentChange('duration', e.target.value)}
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">URL do Arquivo MP3 / Stream</label>
+                  <input
+                    type="text"
+                    value={block.content.audioUrl || ''}
+                    onChange={(e) => handleContentChange('audioUrl', e.target.value)}
+                    placeholder="https://exemplo.com/podcast.mp3"
+                    className="w-full p-2 rounded-lg border border-slate-300 bg-white text-xs font-mono"
+                  />
+                </div>
+              </>
+            )}
           </>
         )}
 

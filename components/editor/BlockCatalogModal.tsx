@@ -28,6 +28,12 @@ import {
   X,
   BookmarkCheck,
   Plus,
+  Info,
+  GitCommit,
+  Layers,
+  BarChart2,
+  Link,
+  Headphones,
 } from 'lucide-react';
 
 interface BlockCatalogModalProps {
@@ -49,22 +55,28 @@ const BLOCK_DEFINITIONS: BlockDefinition[] = [
   // Texto
   { type: 'heading', title: 'Título / Cabeçalho', description: 'Títulos H1 a H6 para estruturação semântica', icon: Type, category: 'text' },
   { type: 'paragraph', title: 'Parágrafo de Texto', description: 'Texto corrido com suporte a formatação rica', icon: AlignLeft, category: 'text' },
+  { type: 'callout', title: 'Destaque (Callout Notion)', description: 'Caixa de aviso, dica ou alerta com ícone e tom visual', icon: Info, category: 'text', badge: 'Notion' },
   { type: 'quote', title: 'Citação / Depoimento', description: 'Destaque citações com autor e cargo', icon: Quote, category: 'text' },
   { type: 'code', title: 'Bloco de Código', description: 'Trechos de código com botão de cópia rápida', icon: Code2, category: 'text' },
   { type: 'custom_html', title: 'HTML / Componente Custom', description: 'Insira código HTML ou JSX personalizado', icon: Code, category: 'text', badge: 'Pro' },
 
-  // Mídia
+  // Mídia & Embeds
   { type: 'image', title: 'Imagem Única', description: 'Foto com legenda, alt text e bordas arredondadas', icon: ImageIcon, category: 'media' },
   { type: 'gallery', title: 'Galeria de Imagens', description: 'Grade responsiva com 2 a 4 colunas de fotos', icon: Images, category: 'media' },
   { type: 'video', title: 'Player de Vídeo', description: 'Embed responsivo de YouTube, Vimeo ou MP4', icon: Video, category: 'media' },
+  { type: 'audio', title: 'Player de Áudio / Podcast', description: 'Player de áudio com som, ondas e tempo de execução', icon: Headphones, category: 'media', badge: 'Novo' },
+  { type: 'embed', title: 'Embed Universal (Spotify/Figma)', description: 'Incorporação de Spotify, YouTube, Figma ou CodePen', icon: Link, category: 'media', badge: 'Novo' },
 
-  // Layout
+  // Layout & Estrutura
   { type: 'hero', title: 'Seção Hero Principal', description: 'Banner de impacto com título, subtítulo e botões', icon: Sparkles, category: 'layout', badge: 'Destaque' },
+  { type: 'tabs', title: 'Abas de Conteúdo (Tabs)', description: 'Seletor de abas dinâmicas para organizar conteúdo compacto', icon: Layers, category: 'layout', badge: 'Interativo' },
+  { type: 'timeline', title: 'Linha do Tempo (Roadmap)', description: 'Marcos sequenciais com datas, status e progresso', icon: GitCommit, category: 'layout', badge: 'Novo' },
   { type: 'columns', title: 'Colunas de Recursos', description: 'Grade de 2 a 4 colunas com ícones e textos', icon: ColumnsIcon, category: 'layout' },
   { type: 'divider', title: 'Divisor de Linha', description: 'Linha sutil para separar seções', icon: Minus, category: 'layout' },
   { type: 'spacer', title: 'Espaçador Flexível', description: 'Espaço em branco com altura customizável', icon: MoveVertical, category: 'layout' },
 
-  // Marketing & Conversão
+  // Interatividade & Marketing
+  { type: 'poll', title: 'Enquete / Votação (Poll)', description: 'Quiz interativo com contagem e percentuais de votos', icon: BarChart2, category: 'interactive', badge: 'Interativo' },
   { type: 'cta_banner', title: 'Banner de Conversão (CTA)', description: 'Chamada para ação de alto impacto com botões', icon: Megaphone, category: 'marketing', badge: 'Alta Conversão' },
   { type: 'newsletter', title: 'Formulário de Newsletter', description: 'Captura de e-mails com validação interativa', icon: Mail, category: 'marketing' },
   { type: 'pricing', title: 'Tabela de Preços', description: 'Grade de planos SaaS com destaques e recursos', icon: CreditCard, category: 'marketing' },
@@ -78,7 +90,7 @@ const BLOCK_DEFINITIONS: BlockDefinition[] = [
 export function BlockCatalogModal({ isOpen, onClose, insertIndex }: BlockCatalogModalProps) {
   const { addBlock, reusableBlocks, insertReusableBlock } = useCMS();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'text' | 'media' | 'layout' | 'marketing' | 'reusable'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'text' | 'media' | 'layout' | 'marketing' | 'interactive' | 'reusable'>('all');
 
   if (!isOpen) return null;
 
@@ -181,6 +193,15 @@ export function BlockCatalogModal({ isOpen, onClose, insertIndex }: BlockCatalog
               }`}
             >
               Marketing & Conversão
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('interactive')}
+              className={`px-3 py-1.5 rounded-lg font-medium transition-colors shrink-0 ${
+                selectedCategory === 'interactive' ? 'bg-blue-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+              }`}
+            >
+              Interativos & Enquetes
             </button>
             <button
               type="button"
