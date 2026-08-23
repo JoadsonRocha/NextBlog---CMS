@@ -232,10 +232,35 @@ export function PublicSiteView() {
       <main className="flex-1">
         {/* VIEW 1: DYNAMIC PAGE (HOME, FEATURES, PRICING, ABOUT) */}
         {isSinglePage && currentPage && (
-          <div className="w-full">
-            {currentPage.blocks.map((block) => (
-              <BlockRenderer key={block.id} block={block} isEditing={false} />
-            ))}
+          <div className={`w-full ${
+            currentPage.template === 'fullwidth'
+              ? 'w-full'
+              : currentPage.template === 'landing'
+              ? 'w-full bg-linear-to-b from-slate-50 via-white to-slate-50'
+              : 'max-w-5xl mx-auto px-4 sm:px-8 py-10'
+          }`}>
+            {/* Page Header (if not home and has title) */}
+            {!currentPage.isHomePage && currentPage.slug !== 'home' && (
+              <div className="mb-10 text-center max-w-3xl mx-auto space-y-3 px-4">
+                <span className="text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
+                  {currentPage.template === 'landing' ? 'Landing Page' : 'Página Oficial'}
+                </span>
+                <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+                  {currentPage.title}
+                </h1>
+                {currentPage.description && (
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                    {currentPage.description}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="space-y-6">
+              {currentPage.blocks.map((block) => (
+                <BlockRenderer key={block.id} block={block} isEditing={false} />
+              ))}
+            </div>
           </div>
         )}
 
