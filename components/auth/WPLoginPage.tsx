@@ -141,8 +141,8 @@ export function WPLoginPage({ onSuccess }: WPLoginPageProps) {
 
         {/* Quick Demo Credentials helper */}
         <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-500 space-y-1">
-          <span className="font-bold text-slate-700 block">💡 Credenciais Padrão do Administrador:</span>
-          <p>E-mail: <strong className="text-slate-900 font-mono">admin@nextblog.com</strong></p>
+          <span className="font-bold text-slate-700 block">💡 Credenciais do Administrador:</span>
+          <p>E-mail: <strong className="text-slate-900 font-mono">{masterAdmin?.email || 'admin@nextblog.com'}</strong></p>
           <p>Senha: <strong className="text-slate-900 font-mono">admin123</strong></p>
         </div>
       </div>
