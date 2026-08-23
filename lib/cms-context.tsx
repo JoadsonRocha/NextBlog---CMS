@@ -18,6 +18,7 @@ import {
   Theme,
   PluginItem,
   MenuItem,
+  ContentRevision,
 } from '@/types/cms';
 import {
   INITIAL_POSTS,
@@ -80,6 +81,11 @@ interface CMSContextType {
   menus: MenuItem[];
   settings: GlobalSettings;
   deployment: DeploymentConfig;
+  revisions: ContentRevision[];
+
+  // Revisions & Version History Actions
+  createRevisionSnapshot: (itemId: string, itemType: 'post' | 'page', changeSummary?: string) => void;
+  restoreRevision: (revisionId: string) => void;
 
   // Post Actions
   updatePost: (id: string, updates: Partial<Post>) => void;
@@ -335,6 +341,31 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     customDomain: 'nextblock-cms.app',
   });
 
+  const [revisions, setRevisions] = useState<ContentRevision[]>([
+    {
+      id: 'rev_1_initial',
+      itemId: 'post_1',
+      itemType: 'post',
+      version: 1,
+      title: 'O Futuro dos CMS Headless e Next.js em 2026',
+      authorName: 'Ana Silva',
+      changeSummary: 'Versão inicial com introdução e blocos de código',
+      blocksSnapshot: INITIAL_POSTS[0].blocks,
+      createdAt: '2026-03-20T14:30:00Z',
+    },
+    {
+      id: 'rev_2_enhancement',
+      itemId: 'post_1',
+      itemType: 'post',
+      version: 2,
+      title: 'O Futuro dos CMS Headless e Next.js em 2026',
+      authorName: 'Carlos Mendes',
+      changeSummary: 'Adicionados blocos de FAQ interativo e Newsletter',
+      blocksSnapshot: INITIAL_POSTS[0].blocks,
+      createdAt: '2026-03-22T09:15:00Z',
+    },
+  ]);
+
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   // Sync to localStorage
@@ -352,12 +383,13 @@ export function CMSProvider({ children }: { children: ReactNode }) {
         themes,
         plugins,
         menus,
+        revisions,
       };
       localStorage.setItem('nextblock_cms_state', JSON.stringify(payload));
     } catch (e) {
       console.warn('Erro ao salvar no localStorage:', e);
     }
-  }, [posts, pages, reusableBlocks, media, categories, settings, users, comments, themes, plugins, menus]);
+  }, [posts, pages, reusableBlocks, media, categories, settings, users, comments, themes, plugins, menus, revisions]);
 
   const removeToast = (id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -527,6 +559,50 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     };
     setPosts((prev) => [duplicated, ...prev]);
     addToast({ type: 'success', title: 'Post duplicado com sucesso!' });
+  };
+
+  const createRevisionSnapshot = (itemId: string, itemType: 'post' | 'page', changeSummary: string = 'Revisão salva') => {
+    const item = itemType === 'post' ? posts.find((p) => p.id === itemId) : pages.find((p) => p.id === itemId);
+    if (!item) return;
+
+    const previousRevs = revisions.filter((r) => r.itemId === itemId);
+    const newVersion = previousRevs.length + 1;
+
+    const newRev: ContentRevision = {
+      id: `rev_${Date.now()}_v${newVersion}`,
+      itemId,
+      itemType,
+      version: newVersion,
+      title: item.title,
+      authorName: currentUser.name || 'Editor',
+      authorAvatar: currentUser.avatar,
+      changeSummary,
+      blocksSnapshot: JSON.parse(JSON.stringify(item.blocks)),
+      createdAt: new Date().toISOString(),
+    };
+
+    setRevisions((prev) => [newRev, ...prev]);
+    addToast({ type: 'success', title: `Snapshot v${newVersion} salvo no histórico!`, message: 'Você pode restaurar esta versão a qualquer momento.' });
+  };
+
+  const restoreRevision = (revisionId: string) => {
+    const rev = revisions.find((r) => r.id === revisionId);
+    if (!rev) {
+      addToast({ type: 'error', title: 'Revisão não encontrada.' });
+      return;
+    }
+
+    if (rev.itemType === 'post') {
+      setPosts((prev) =>
+        prev.map((p) => (p.id === rev.itemId ? { ...p, title: rev.title, blocks: JSON.parse(JSON.stringify(rev.blocksSnapshot)), updatedAt: new Date().toISOString() } : p))
+      );
+    } else {
+      setPages((prev) =>
+        prev.map((pg) => (pg.id === rev.itemId ? { ...pg, title: rev.title, blocks: JSON.parse(JSON.stringify(rev.blocksSnapshot)), updatedAt: new Date().toISOString() } : pg))
+      );
+    }
+
+    addToast({ type: 'success', title: `Versão v${rev.version} restaurada com sucesso!`, message: 'O conteúdo do editor foi revertido para o snapshot selecionado.' });
   };
 
   const updatePage = (id: string, updates: Partial<Page>) => {
@@ -1127,6 +1203,9 @@ export function CMSProvider({ children }: { children: ReactNode }) {
         menus,
         settings,
         deployment,
+        revisions,
+        createRevisionSnapshot,
+        restoreRevision,
         updatePost,
         deletePost,
         duplicatePost,

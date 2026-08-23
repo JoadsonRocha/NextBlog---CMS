@@ -310,6 +310,54 @@ export function BlockInspector({ block, onClose }: BlockInspectorProps) {
                     className="w-full p-2 rounded-lg border border-slate-300 bg-white"
                   />
                 </div>
+
+                {/* 2D Wagtail-style Focal Point Picker */}
+                {block.content.url && (
+                  <div className="pt-2 border-t border-slate-100">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="font-bold text-slate-700 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                        <span>Ponto Focal Inteligente (Wagtail)</span>
+                      </label>
+                      <span className="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                        X: {block.content.focalPoint?.x ?? 50}% | Y: {block.content.focalPoint?.y ?? 50}%
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-slate-500 mb-2 leading-tight">
+                      Clique na imagem abaixo para definir o ponto central de corte em celulares e banners.
+                    </p>
+
+                    <div
+                      className="relative rounded-xl overflow-hidden border-2 border-slate-200 cursor-crosshair group shadow-2xs aspect-16/10 bg-slate-900"
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const x = Math.max(0, Math.min(100, Math.round(((e.clientX - rect.left) / rect.width) * 100)));
+                        const y = Math.max(0, Math.min(100, Math.round(((e.clientY - rect.top) / rect.height) * 100)));
+                        handleContentChange('focalPoint', { x, y });
+                      }}
+                    >
+                      <img
+                        src={block.content.url}
+                        alt="Focal preview"
+                        className="w-full h-full object-cover opacity-90"
+                        style={{
+                          objectPosition: `${block.content.focalPoint?.x ?? 50}% ${block.content.focalPoint?.y ?? 50}%`,
+                        }}
+                      />
+
+                      {/* Reticle / Focal Target Marker */}
+                      <div
+                        className="absolute w-6 h-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-purple-600/60 shadow-lg pointer-events-none flex items-center justify-center transition-all duration-150"
+                        style={{
+                          left: `${block.content.focalPoint?.x ?? 50}%`,
+                          top: `${block.content.focalPoint?.y ?? 50}%`,
+                        }}
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             )}
 

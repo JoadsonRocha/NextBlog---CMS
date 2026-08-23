@@ -9,7 +9,8 @@ import { BlockInspector } from '@/components/editor/BlockInspector';
 import { SlashCommandMenu } from '@/components/editor/SlashCommandMenu';
 import { KeyboardShortcutsModal } from '@/components/editor/KeyboardShortcutsModal';
 import { SEOInspectorModal } from '@/components/editor/SEOInspectorModal';
-import { ContentBlock, Post, Page, BlockType } from '@/types/cms';
+import { RevisionsModal } from '@/components/editor/RevisionsModal';
+import { ContentBlock, Post, Page, BlockType, PostStatus } from '@/types/cms';
 import {
   Monitor,
   Tablet,
@@ -33,6 +34,10 @@ import {
   Share2,
   Keyboard,
   Sliders,
+  History,
+  ShieldCheck,
+  Clock,
+  Archive,
 } from 'lucide-react';
 
 export function VisualEditor() {
@@ -63,6 +68,7 @@ export function VisualEditor() {
   const [isSEOOpen, setIsSEOOpen] = useState(false);
   const [isSlashOpen, setIsSlashOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [isRevisionsOpen, setIsRevisionsOpen] = useState(false);
   const [isInspectorVisible, setIsInspectorVisible] = useState(true);
 
   if (!editingTarget) {
@@ -94,11 +100,10 @@ export function VisualEditor() {
   // Global Keyboard Shortcuts Listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if typing inside input or textarea
       const target = e.target as HTMLElement;
       const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
 
-      // Ctrl/Cmd + S -> Salvar
+      // Ctrl/Cmd + S -> Salvar & Criar Snapshot
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
         e.preventDefault();
         addToast({ type: 'success', title: 'Alterações salvas com sucesso!' });
@@ -119,7 +124,7 @@ export function VisualEditor() {
         return;
       }
 
-      // '/' Key -> Slash Command menu (when not inside inputs)
+      // '/' Key -> Slash Command menu
       if (e.key === '/' && !isInput && !isPreviewMode) {
         e.preventDefault();
         setInsertIndex(activeBlocks.length);
@@ -147,18 +152,28 @@ export function VisualEditor() {
     }
   };
 
-  const handleStatusChange = (status: 'published' | 'draft') => {
+  const handleWorkflowTransition = (newStatus: PostStatus) => {
     if (isPost) {
       updatePost(currentItem.id, {
-        status,
-        publishedAt: status === 'published' ? new Date().toISOString() : '',
+        status: newStatus,
+        publishedAt: newStatus === 'published' ? new Date().toISOString() : (currentItem as Post).publishedAt,
       });
     } else {
-      updatePage(currentItem.id, { status });
+      updatePage(currentItem.id, { status: newStatus as any });
     }
+
+    const labels: Record<string, string> = {
+      draft: 'Salvo como Rascunho',
+      in_review: 'Enviado para Revisão Editorial',
+      approved: 'Aprovado para Publicação',
+      published: 'Publicado com Sucesso no Site!',
+      archived: 'Conteúdo Arquivado',
+    };
+
     addToast({
       type: 'success',
-      title: status === 'published' ? 'Publicado com sucesso!' : 'Salvo como rascunho.',
+      title: labels[newStatus] || 'Status Atualizado',
+      message: `O status agora é: ${newStatus.toUpperCase()}`,
     });
   };
 
@@ -306,6 +321,17 @@ export function VisualEditor() {
             <span className="hidden sm:inline">SEO Pro</span>
           </button>
 
+          {/* Wagtail-style Revisions History Button */}
+          <button
+            type="button"
+            onClick={() => setIsRevisionsOpen(true)}
+            className="px-2.5 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs font-bold flex items-center gap-1 transition-colors shadow-2xs"
+            title="Comparar versões e restaurar histórico (Wagtail)"
+          >
+            <History className="w-3.5 h-3.5 text-purple-600" />
+            <span className="hidden sm:inline">Versões</span>
+          </button>
+
           <button
             type="button"
             onClick={() => setIsShortcutsOpen(true)}
@@ -337,9 +363,33 @@ export function VisualEditor() {
             <ExternalLink className="w-4 h-4" />
           </button>
 
+          {/* Plone-style Multi-stage Workflow Controls */}
+          {currentItem.status === 'draft' && (
+            <button
+              type="button"
+              onClick={() => handleWorkflowTransition('in_review')}
+              className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5"
+            >
+              <Clock className="w-3.5 h-3.5" />
+              <span>Solicitar Revisão</span>
+            </button>
+          )}
+
+          {currentItem.status === 'in_review' && (
+            <button
+              type="button"
+              onClick={() => handleWorkflowTransition('approved')}
+              disabled={currentUser.role === 'visitor'}
+              className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Aprovar Conteúdo</span>
+            </button>
+          )}
+
           <button
             type="button"
-            onClick={() => handleStatusChange(currentItem.status === 'published' ? 'draft' : 'published')}
+            onClick={() => handleWorkflowTransition(currentItem.status === 'published' ? 'draft' : 'published')}
             disabled={currentUser.role === 'visitor'}
             className={`px-4 py-1.5 rounded-lg text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5 ${
               currentItem.status === 'published'
@@ -348,7 +398,7 @@ export function VisualEditor() {
             }`}
           >
             <CheckCircle className="w-3.5 h-3.5" />
-            <span>{currentItem.status === 'published' ? 'Publicado' : 'Publicar'}</span>
+            <span>{currentItem.status === 'published' ? 'Publicado' : 'Publicar Agora'}</span>
           </button>
         </div>
       </header>
@@ -601,6 +651,15 @@ export function VisualEditor() {
         onClose={() => setIsSEOOpen(false)}
         item={currentItem}
         isPost={isPost}
+      />
+
+      {/* Revisions History Modal (Wagtail Diff) */}
+      <RevisionsModal
+        isOpen={isRevisionsOpen}
+        onClose={() => setIsRevisionsOpen(false)}
+        itemId={currentItem.id}
+        itemType={isPost ? 'post' : 'page'}
+        currentBlocks={activeBlocks}
       />
     </div>
   );

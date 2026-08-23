@@ -191,6 +191,9 @@ export function BlockRenderer({ block, isEditing = false, onUpdateContent }: Blo
             <img
               src={content.url || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80'}
               alt={content.altText || 'Imagem'}
+              style={{
+                objectPosition: `${content.focalPoint?.x ?? 50}% ${content.focalPoint?.y ?? 50}%`,
+              }}
               className="w-full h-auto rounded-xl object-cover shadow-sm border border-slate-200 max-h-[500px]"
             />
             {content.caption && (

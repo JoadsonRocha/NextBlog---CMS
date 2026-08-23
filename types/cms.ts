@@ -152,7 +152,20 @@ export interface SEOMetadata {
   noIndex?: boolean;
 }
 
-export type PostStatus = 'published' | 'draft' | 'scheduled';
+export type PostStatus = 'published' | 'draft' | 'in_review' | 'approved' | 'scheduled' | 'archived';
+
+export interface ContentRevision {
+  id: string;
+  itemId: string;
+  itemType: 'post' | 'page';
+  version: number;
+  title: string;
+  authorName: string;
+  authorAvatar?: string;
+  changeSummary: string;
+  blocksSnapshot: ContentBlock[];
+  createdAt: string;
+}
 
 export interface Post {
   id: string;
@@ -160,7 +173,9 @@ export interface Post {
   title: string;
   excerpt: string;
   featuredImage: string;
+  focalPoint?: { x: number; y: number };
   status: PostStatus;
+  editorialNotes?: string;
   category: string;
   tags: string[];
   authorId: string;
@@ -181,8 +196,10 @@ export interface Page {
   title: string;
   description: string;
   template: 'default' | 'fullwidth' | 'landing';
-  status: 'published' | 'draft';
+  status: 'published' | 'draft' | 'in_review' | 'approved' | 'archived';
   isHomePage: boolean;
+  parentId?: string;
+  parentSlug?: string;
   order?: number;
   orderIndex?: number;
   blocks: ContentBlock[];
