@@ -93,6 +93,10 @@ export function PublicSiteView() {
     });
   };
 
+  const handleShare = () => {
+    if (typeof window !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      addToast({ type: 'success', title: 'Link copiado para a área de transferência!' });
     }
   };
 
