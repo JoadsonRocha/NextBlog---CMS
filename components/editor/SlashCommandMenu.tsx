@@ -96,17 +96,21 @@ export function SlashCommandMenu({ isOpen, onClose, onSelectBlock, position }: S
     );
   });
 
-  useEffect(() => {
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (prevIsOpen !== isOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
       setQuery('');
       setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
     }
-  }, [isOpen]);
+  }
 
   useEffect(() => {
-    setSelectedIndex(0);
-  }, [query]);
+    if (isOpen) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
@@ -144,7 +148,10 @@ export function SlashCommandMenu({ isOpen, onClose, onSelectBlock, position }: S
             ref={inputRef}
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setSelectedIndex(0);
+            }}
             onKeyDown={handleKeyDown}
             placeholder="Digite para filtrar blocos (ex: callout, tabs, poll)..."
             className="flex-1 bg-transparent border-none text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-hidden"
@@ -161,7 +168,7 @@ export function SlashCommandMenu({ isOpen, onClose, onSelectBlock, position }: S
         <div ref={listRef} className="p-2 overflow-y-auto flex-1 divide-y divide-slate-50 space-y-1">
           {filteredItems.length === 0 ? (
             <div className="py-8 text-center text-xs text-slate-400">
-              Nenhum bloco encontrado para "{query}".
+              Nenhum bloco encontrado para &quot;{query}&quot;.
             </div>
           ) : (
             filteredItems.map((item, index) => {

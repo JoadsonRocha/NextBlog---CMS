@@ -1077,7 +1077,7 @@ function AudioPlayerComponent({ content, styleClasses }: { content: any; styleCl
                   className={`flex-1 rounded-full transition-all duration-300 ${
                     isPlaying ? 'bg-blue-400 animate-pulse' : 'bg-slate-700'
                   }`}
-                  style={{ height: isPlaying ? `${Math.max(20, Math.round(h * Math.random()))}%` : `${Math.round(h * 0.4)}%` }}
+                  style={{ height: isPlaying ? `${Math.max(25, Math.round(h * (0.45 + ((i % 5) * 0.12))))}%` : `${Math.round(h * 0.4)}%` }}
                 />
               ))}
             </div>

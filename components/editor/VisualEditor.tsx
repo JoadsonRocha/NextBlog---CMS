@@ -71,34 +71,10 @@ export function VisualEditor() {
   const [isRevisionsOpen, setIsRevisionsOpen] = useState(false);
   const [isInspectorVisible, setIsInspectorVisible] = useState(true);
 
-  if (!editingTarget) {
-    return (
-      <div className="p-12 text-center text-slate-500">
-        <p className="font-semibold">Nenhum item selecionado para edição.</p>
-        <button
-          type="button"
-          onClick={() => setActiveView('posts')}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold"
-        >
-          Ir para Lista de Posts
-        </button>
-      </div>
-    );
-  }
-
-  const isPost = editingTarget.type === 'post';
-  const currentItem = isPost
-    ? posts.find((p) => p.id === editingTarget.id)
-    : pages.find((p) => p.id === editingTarget.id);
-
-  if (!currentItem) {
-    return <div className="p-12 text-center text-slate-500">Item não encontrado.</div>;
-  }
-
-  const selectedBlock = activeBlocks.find((b) => b.id === selectedBlockId) || null;
-
   // Global Keyboard Shortcuts Listener
   useEffect(() => {
+    if (!editingTarget) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
       const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
@@ -142,7 +118,33 @@ export function VisualEditor() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeBlocks.length, isPreviewMode, addToast]);
+  }, [editingTarget, activeBlocks.length, isPreviewMode, addToast]);
+
+  if (!editingTarget) {
+    return (
+      <div className="p-12 text-center text-slate-500">
+        <p className="font-semibold">Nenhum item selecionado para edição.</p>
+        <button
+          type="button"
+          onClick={() => setActiveView('posts')}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold"
+        >
+          Ir para Lista de Posts
+        </button>
+      </div>
+    );
+  }
+
+  const isPost = editingTarget.type === 'post';
+  const currentItem = isPost
+    ? posts.find((p) => p.id === editingTarget.id)
+    : pages.find((p) => p.id === editingTarget.id);
+
+  if (!currentItem) {
+    return <div className="p-12 text-center text-slate-500">Item não encontrado.</div>;
+  }
+
+  const selectedBlock = activeBlocks.find((b) => b.id === selectedBlockId) || null;
 
   const handleTitleChange = (newTitle: string) => {
     if (isPost) {

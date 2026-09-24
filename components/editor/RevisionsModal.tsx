@@ -201,7 +201,7 @@ export function RevisionsModal({ isOpen, onClose, itemId, itemType, currentBlock
                       </span>
                     </div>
                     <p className="text-xs text-slate-600 mt-1 italic">
-                      "{activeRev.changeSummary}"
+                      &quot;{activeRev.changeSummary}&quot;
                     </p>
                   </div>
 
