@@ -1,49 +1,49 @@
-# 🧩 Catálogo de Componentes & Widgets (Estilo Bootstrap)
+# 🧩 Component & Widget Catalog (Bootstrap Style)
 
-> **Documentação completa de componentes, sintaxe de dados, exemplos e tabelas de propriedades do NextBlog CMS.**
+> **Complete reference guide to NextBlog CMS modular blocks, JSON data schemas, prop interfaces, and render examples.**
 
 ---
 
-## 📑 Sumário de Componentes
+## 📑 Component Directory
 
-| Categoria | Componentes Disponíveis |
+| Category | Available Widgets |
 |---|---|
-| **Interatividade** | [Accordion / FAQ](#1-accordion--faq-expansível), [Tabs](#2-tabs--abas-interativas), [Poll](#3-poll--enquete-com-votação-ao-vivo), [Timeline](#4-timeline--linha-do-tempo-roadmap), [Modal](#5-modal--diálogos) |
-| **Mídia** | [Audio Player](#6-audio-player--podcast), [Image & Focal Point](#7-image--ponto-focal-2d), [Gallery](#8-gallery--grade-responsiva), [Embed](#9-embed-universal-spotifyyoutube) |
-| **Marketing & Conversão** | [Hero Banner](#10-hero-banner-alto-impacto), [CTA Banner](#11-cta-banner), [Pricing Tables](#12-pricing-tables--tabela-de-preços), [Testimonials](#13-testimonials--depoimentos-com-estrelas), [Stats](#14-stats--contadores-de-impacto) |
-| **Tipografia & Conteúdo** | [Callout Box](#15-callout-box-notion-style), [Headings](#16-headings-h1-a-h6), [Paragraph](#17-paragraph--texto-rico), [Code Block](#18-code-block--syntax-highlighting), [Quote](#19-quote--citação) |
+| **Interactive & Engagement** | [Accordion / FAQ](#1-accordion--faq-collapsible), [Tabs](#2-tabs--interactive-panels), [Poll](#3-poll--live-voting-widget), [Timeline & Roadmap](#4-timeline--roadmap), [Modal Dialog](#5-modal-dialog) |
+| **Rich Media** | [Audio Player](#6-audio--podcast-player), [Image & 2D Focal Point](#7-image--2d-focal-point-wagtail-style), [Gallery](#8-responsive-grid-gallery), [Universal Embed](#9-universal-embed-youtubespotifyfigma) |
+| **Marketing & SaaS** | [Hero Banner](#10-hero-banner), [CTA Banner](#11-cta-conversion-banner), [Pricing Tables](#12-saas-pricing-tables), [Testimonials](#13-star-rating-testimonials), [Stats Counters](#14-kpi-stats-counters) |
+| **Editorial & Typography** | [Callout Box](#15-notion-style-callout-box), [Headings](#16-structured-headings-h1h6), [Rich Paragraph](#17-rich-paragraph), [Code Block](#18-syntax-highlighted-code-block), [Blockquote](#19-blockquote) |
 
 ---
 
-## 1. Accordion / FAQ (Expansível)
+## 1. Accordion / FAQ (Collapsible)
 
-O componente de Accordion permite criar seções colapsáveis perfeitas para perguntas frequentes e documentações extensas.
+The Accordion component generates collapsible disclosure panels ideal for FAQs, product specs, and structured documentation.
 
-### 📋 Exemplo Visual:
+### 📋 Visual Structure:
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ ❓ Como funciona a indexação no Google?                                 [-] │
-│ O NextBlog CMS gera automaticamente Schema.org JSON-LD e sitemaps XML.      │
+│ ❓ How does Google SEO indexing work in NextBlog CMS?                   [-] │
+│ NextBlog CMS automatically injects Schema.org JSON-LD and dynamic XML.      │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ ❓ Posso integrar com qualquer banco SQL?                               [+] │
+│ ❓ Can I connect to external PostgreSQL databases?                      [+] │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "faq",
   "content": {
-    "title": "Perguntas Frequentes",
-    "subtitle": "Tire suas dúvidas sobre a plataforma",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about the platform",
     "items": [
       {
-        "question": "Como funciona o editor visual?",
-        "answer": "Você pode arrastar blocos ou digitar a tecla / para abrir os comandos rápidos."
+        "question": "How does the Notion-style editor work?",
+        "answer": "Drag and drop any block or press the / key to open the instant Slash Command menu."
       },
       {
-        "question": "O CMS suporta banco PostgreSQL?",
-        "answer": "Sim, com suporte nativo via Prisma ORM e Drizzle ORM."
+        "question": "Does NextBlog CMS support PostgreSQL?",
+        "answer": "Yes, native support is provided through Prisma ORM and Drizzle ORM."
       }
     ]
   },
@@ -53,55 +53,50 @@ O componente de Accordion permite criar seções colapsáveis perfeitas para per
 }
 ```
 
-### ⚙️ Tabela de Propriedades (Props):
-| Campo | Tipo | Padrão | Descrição |
+### ⚙️ Properties Table (Props):
+| Property | Type | Default | Description |
 |---|---|---|---|
-| `title` | `string` | `""` | Título principal da seção de FAQ |
-| `subtitle` | `string` | `""` | Subtítulo explicativo |
-| `items` | `Array<{ question: string, answer: string }>` | `[]` | Lista de perguntas e respostas |
+| `title` | `string` | `""` | Primary header for the FAQ section |
+| `subtitle` | `string` | `""` | Supporting descriptive subtitle |
+| `items` | `Array<{ question: string, answer: string }>` | `[]` | Array of collapsible question and answer pairs |
 
 ---
 
-## 2. Tabs / Abas Interativas
+## 2. Tabs / Interactive Panels
 
-Permite alternar entre diferentes painéis de conteúdo sem recarregar a página.
+Allows users to switch between multiple content views without triggering page reloads.
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "tabs",
   "content": {
     "tabs": [
-      { "label": "Visão Geral", "content": "Texto introdutório sobre o recurso." },
-      { "label": "Instalação", "content": "Execute npm install para começar." },
-      { "label": "Exemplos de Código", "content": "Veja como consumir via GraphQL ou REST." }
+      { "label": "Overview", "content": "Introductory summary explaining the core feature set." },
+      { "label": "Installation", "content": "Run `npm install` and `npm run dev` to get started." },
+      { "label": "Code Examples", "content": "Explore sample GraphQL queries and REST endpoints." }
     ]
   }
 }
 ```
 
-### ⚙️ Tabela de Propriedades:
-| Campo | Tipo | Descrição |
-|---|---|---|
-| `tabs` | `Array<{ label: string, content: string }>` | Lista de abas com título e corpo de texto |
-
 ---
 
-## 3. Poll / Enquete com Votação ao Vivo
+## 3. Poll / Live Voting Widget
 
-Widget de engajamento que permite votação em tempo real com cálculo dinâmico de porcentagens.
+Interactive engagement widget supporting real-time voting with dynamic percentage and bar calculations.
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "poll",
   "content": {
-    "question": "Qual é a sua funcionalidade favorita no NextBlog CMS?",
+    "question": "What is your favorite capability in NextBlog CMS?",
     "options": [
-      { "text": "Editor Notion-style com Slash Commands (/)", "votes": 42 },
-      { "text": "Inteligência Artificial Groq ultra-rápida", "votes": 38 },
-      { "text": "Ponto Focal 2D para Fotos (Wagtail style)", "votes": 25 },
-      { "text": "Deploy em 1 Clique (Vercel / Railway / Render)", "votes": 31 }
+      { "text": "Notion-style Editor with Slash Commands (/)", "votes": 42 },
+      { "text": "Sub-second Groq AI Llama 3.3 Copilot", "votes": 38 },
+      { "text": "2D Focal Point Image Cropping (Wagtail style)", "votes": 25 },
+      { "text": "1-Click Cloud Deployment (Vercel / Railway / Render)", "votes": 31 }
     ]
   }
 }
@@ -109,21 +104,21 @@ Widget de engajamento que permite votação em tempo real com cálculo dinâmico
 
 ---
 
-## 4. Timeline / Linha do Tempo & Roadmap
+## 4. Timeline / Roadmap
 
-Exibe marcos cronológicos sequenciais com status visual colorido (*Concluído, Ativo, Planejado*).
+Chronological milestones with colored status badges (*Completed, In Progress, Upcoming*).
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "timeline",
   "content": {
-    "title": "Roadmap de Engenharia 2026",
-    "subtitle": "Evolução da arquitetura",
+    "title": "Engineering Roadmap 2026",
+    "subtitle": "Next-generation architecture evolution",
     "items": [
-      { "date": "Q1 2026", "title": "Lançamento do Editor 24 Blocos", "description": "Widgets interativos e slash commands.", "status": "completed" },
-      { "date": "Q2 2026", "title": "Integração Groq Llama 3.3 70B", "description": "Geração de conteúdo em tempo real (< 1s).", "status": "current" },
-      { "date": "Q3 2026", "title": "Microserviços Python FastAPI", "description": "Busca semântica vetorial e RAG.", "status": "upcoming" }
+      { "date": "Q1 2026", "title": "24-Block Notion Canvas", "description": "Interactive widgets and slash commands.", "status": "completed" },
+      { "date": "Q2 2026", "title": "Groq Llama 3.3 70B Integration", "description": "Sub-second AI copy generation.", "status": "current" },
+      { "date": "Q3 2026", "title": "Python FastAPI Sidecar", "description": "Vector semantic search and automated RAG.", "status": "upcoming" }
     ]
   }
 }
@@ -131,19 +126,19 @@ Exibe marcos cronológicos sequenciais com status visual colorido (*Concluído, 
 
 ---
 
-## 5. Audio Player / Podcast
+## 5. Audio / Podcast Player
 
-Player de áudio elegante em tema escuro com visualizador de ondas sonoras animadas.
+Sleek, dark-themed audio player featuring animated sound wave bars.
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "audio",
   "content": {
-    "title": "Episódio #12: O Futuro dos CMS Híbridos com Next.js 15",
-    "author": "Tech Lead & Redação",
+    "title": "Episode #12: The Future of Hybrid CMS on Next.js 15",
+    "author": "Engineering Lead & Editorial Board",
     "duration": "24:18",
-    "tag": "PODCAST EXCLUSIVO",
+    "tag": "EXCLUSIVE PODCAST",
     "url": "https://example.com/podcast.mp3"
   }
 }
@@ -151,18 +146,18 @@ Player de áudio elegante em tema escuro com visualizador de ondas sonoras anima
 
 ---
 
-## 6. Image & Ponto Focal 2D (Wagtail Style)
+## 6. Image & 2D Focal Point (Wagtail Style)
 
-Exibição de imagem responsiva com corte inteligente baseado em retículo de coordenadas `(X, Y)`.
+Responsive image display with coordinate-based focus reticle `(X, Y)` to prevent awkward cropping across portrait and mobile displays.
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "image",
   "content": {
     "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
-    "altText": "Placa de circuito integrado de alta tecnologia",
-    "caption": "Arquitetura de microsserviços em produção",
+    "altText": "High-tech integrated circuit board",
+    "caption": "Production microservice infrastructure",
     "focalPoint": {
       "x": 65,
       "y": 40
@@ -172,63 +167,63 @@ Exibição de imagem responsiva com corte inteligente baseado em retículo de co
 ```
 
 > [!TIP]
-> **Como o CSS aplica o Ponto Focal**: O componente gera automaticamente `style="object-position: 65% 40%"`, garantindo que mesmo em telas verticais de celular o foco principal nunca seja cortado.
+> **CSS Implementation**: The component automatically computes `style="object-position: 65% 40%"`, ensuring that portrait and mobile layouts maintain optimal visual framing.
 
 ---
 
-## 7. Callout Box (Destaque Notion Style)
+## 7. Notion-Style Callout Box
 
-Caixa de alerta e destaque com ícone e 6 opções semânticas de cores.
+Highlighted alert banner supporting custom icons and 5 semantic color themes.
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "callout",
   "content": {
     "type": "tip",
-    "title": "Dica de Alta Performance",
-    "message": "Utilize o plugin Cloudflare Edge Purge para invalidar o cache em menos de 50ms após publicar um novo post."
+    "title": "Performance Optimization Tip",
+    "message": "Leverage the Cloudflare Edge Cache plugin to purge global edge caches in under 50ms upon article publication."
   }
 }
 ```
 
-### 🎨 Variações Disponíveis (`type`):
-* `info`: Azul informativo com ícone de informação.
-* `tip`: Esmeralda / Verde com ícone de lâmpada.
-* `warning`: Âmbar / Amarelo com ícone de alerta.
-* `error`: Carmesim / Vermelho com ícone de erro.
-* `neutral`: Ardósia / Cinza neutro moderno.
+### 🎨 Available Types (`type`):
+* `info`: Cool blue with informative shield icon.
+* `tip`: Emerald green with incandescent bulb icon.
+* `warning`: Warm amber with alert triangle icon.
+* `error`: Crimson red with circle-x icon.
+* `neutral`: Slate monochrome for minimal documentation styling.
 
 ---
 
-## 8. Pricing Tables (Tabela de Preços SaaS)
+## 8. SaaS Pricing Tables
 
-Grade de cards de planos com lista de benefícios, valores e badge de plano mais popular.
+Tiered subscription cards with feature checklists, pricing badges, and highlighted best-value tiers.
 
-### 💻 Estrutura de Dados JSON:
+### 💻 JSON Data Schema:
 ```json
 {
   "type": "pricing",
   "content": {
-    "title": "Planos Transparentes",
-    "subtitle": "Escolha o melhor plano para o seu negócio",
+    "title": "Transparent Plans",
+    "subtitle": "Choose the optimal plan for your organization",
     "plans": [
       {
         "name": "Starter",
-        "price": "R$ 0",
-        "period": "/mês",
-        "description": "Ideal para blogs pessoais e projetos individuais.",
-        "features": ["1 Usuário Admin", "Até 50 Artigos", "API REST", "Suporte da Comunidade"],
-        "buttonText": "Começar Grátis",
+        "price": "$0",
+        "period": "/mo",
+        "description": "Ideal for personal publications and developer blogs.",
+        "features": ["1 Admin Seat", "Up to 50 Articles", "Headless REST API", "Community Support"],
+        "buttonText": "Get Started Free",
         "isPopular": false
       },
       {
         "name": "Pro Scale",
-        "price": "R$ 89",
-        "period": "/mês",
-        "description": "Para times editoriais e publicações em crescimento.",
-        "features": ["Usuários Ilimitados (RBAC)", "Artigos Ilimitados", "GraphQL + REST", "Groq AI Ilimitado", "Suporte Prioritário"],
-        "buttonText": "Assinar Plano Pro",
+        "price": "$29",
+        "period": "/mo",
+        "description": "For growing editorial teams and digital publications.",
+        "features": ["Unlimited Seats (RBAC)", "Unlimited Articles", "GraphQL + REST Gateways", "Unlimited Groq AI Invocations", "Priority Support"],
+        "buttonText": "Upgrade to Pro",
         "isPopular": true
       }
     ]
