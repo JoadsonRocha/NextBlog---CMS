@@ -19,7 +19,7 @@ import {
 
 export function DeployManager() {
   const { deployment, triggerDeploy, settings, addToast } = useCMS();
-  const [activePlatform, setActivePlatform] = useState<'vercel' | 'railway' | 'docker'>('vercel');
+  const [activePlatform, setActivePlatform] = useState<'vercel' | 'railway' | 'docker' | 'netlify' | 'render'>('vercel');
   const [copied, setCopied] = useState<string | null>(null);
 
   const handleCopy = (text: string, id: string) => {

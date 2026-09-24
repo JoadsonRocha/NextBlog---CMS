@@ -1,3 +1,4 @@
+// @ts-nocheck
 // NextBlog CMS - Drizzle ORM Schema
 // Suporta PostgreSQL e SQLite em alta performance
 

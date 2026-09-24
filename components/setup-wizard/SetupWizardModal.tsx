@@ -20,6 +20,8 @@ import {
   Palette,
   Terminal,
   Cpu,
+  Zap,
+  ExternalLink,
 } from 'lucide-react';
 
 interface SetupWizardModalProps {
