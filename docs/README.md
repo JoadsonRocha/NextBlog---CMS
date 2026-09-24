@@ -1,81 +1,81 @@
-# 📚 Central de Documentação do NextBlog CMS
+# 📚 NextBlog CMS — Documentation Portal
 
-> **Documentação estruturada no padrão mundial do Bootstrap e frameworks modernos de documentação (Nextra, Mintlify, Fumadocs).**
-> *Estrutura modular dividida em Getting Started, Componentes, Layout, Customização, Dados, IA e Deploy.*
+> **Enterprise-grade technical documentation structured in accordance with modern documentation framework standards (Nextra, Mintlify, Fumadocs, and Bootstrap Docs).**
+> *Modular architecture divided into Getting Started, Architecture, Components, Customization, Databases, AI, and Production Deployment.*
 
 ---
 
-## 🧭 Mapa Geral da Documentação (Sitemap)
+## 🧭 Documentation Sitemap & Master Index
 
 ```
- docs/
- ├── README.md               <-- (Você está aqui) Índice Geral e Visão da Central
- ├── GETTING_STARTED.md      <-- ⚡ Início Rápido (Instalação em 3 Minutos)
- ├── COMPONENTS.md           <-- 🧩 Catálogo de Componentes & Widgets (Estilo Bootstrap)
- ├── CUSTOMIZE.md            <-- 🎨 Temas, Variáveis CSS, Cores e Google Fonts
- ├── BLOCKS_AND_EDITOR.md    <-- ✏️ Editor Notion-Style, 24 Blocos e Slash (/)
- ├── DEPLOY_GUIDE.md         <-- 🚀 Deploy na Vercel, Netlify, Railway, Render e Docker
- ├── DATABASE_INTEGRATION.md <-- 🗄️ PostgreSQL, Prisma ORM, Drizzle e MongoDB
- ├── SEO_AND_PLUGINS.md      <-- 📈 RankPulse SEO Pro, Schema.org, Groq AI e Plugins
- ├── PYTHON_INTEGRATION.md   <-- 🐍 Ponto Focal 2D, Revisions Diff e FastAPI
- ├── GUIA_COMPLETO_CMS.md    <-- 📖 Manual Mestre Completo (12 Seções Detalhadas)
- └── ARCHITECTURE.md         <-- 🏛️ Arquitetura Técnica do Next.js 15 e React 19
+docs/
+├── README.md               <-- (You are here) Master Portal & Navigation Index
+├── GETTING_STARTED.md      <-- ⚡ Quickstart Guide (3-Minute Setup & Configuration)
+├── ARCHITECTURE.md         <-- 🏛️ System Architecture, Next.js 15, React 19 & Data Flow
+├── COMPONENTS.md           <-- 🧩 24 Notion-Style Widgets Catalog & JSON Schemas
+├── BLOCKS_AND_EDITOR.md    <-- ✏️ Block Canvas Editor, Slash (/) Commands & Revisions
+├── DATABASE_INTEGRATION.md <-- 🗄️ PostgreSQL, Prisma ORM, Neon, Supabase & MongoDB
+├── DEPLOY_GUIDE.md         <-- 🚀 Multi-Cloud Deployment: Vercel, Netlify, Railway, Render, Docker
+├── SEO_AND_PLUGINS.md      <-- 📈 RankPulse SEO Pro, Schema.org, Groq AI & Plugin Engine
+├── CUSTOMIZE.md            <-- 🎨 Themes, CSS Variables, Design Tokens & Google Fonts
+├── PYTHON_INTEGRATION.md   <-- 🐍 2D Focal Point Cropping, Revisions Diff & FastAPI
+└── GUIA_COMPLETO_CMS.md    <-- 📖 Comprehensive Reference Manual
 ```
 
 ---
 
-## 📑 Navegação por Categorias (Bootstrap Style)
+## 📑 Categorized Guide Directory
 
-### ⚡ 1. Getting Started (Primeiros Passos)
-* **[Guia de Início Rápido (GETTING_STARTED.md)](GETTING_STARTED.md)**: Instalação local em 3 comandos e variáveis `.env`.
-* **[Deploy Multi-Nuvem (DEPLOY_GUIDE.md)](DEPLOY_GUIDE.md)**: Hospedagem com 1 clique na Vercel, Netlify, Railway, Render ou Docker.
-* **[Assistente de Instalação (Setup Wizard)](DEPLOY_GUIDE.md#6-️-assistente-de-instalação-setup-wizard)**: Instalador visual guiado de 5 minutos.
-
----
-
-### 🧩 2. Components (Componentes & Widgets)
-* **[Catálogo de Componentes Bootstrap Style (COMPONENTS.md)](COMPONENTS.md)**:
-  * **Interatividade**: *Accordion/FAQ, Tabs, Polls com votação ao vivo, Timeline/Roadmap, Modais*.
-  * **Mídia**: *Audio Player de Podcast, Imagens com Ponto Focal 2D, Galerias Responsivas, Embeds Universais*.
-  * **Marketing**: *Hero Banners, Banners de Conversão CTA, Tabelas de Preços SaaS, Depoimentos, Stats*.
-  * **Tipografia**: *Caixas de Destaque Callout, Títulos H1-H6, Parágrafos Ricos, Blocos de Código e Citações*.
+### ⚡ 1. Getting Started
+* **[Quickstart Guide (GETTING_STARTED.md)](GETTING_STARTED.md)**: Local installation in 3 commands, prerequisite matrix, and `.env` setup.
+* **[Multi-Cloud Deployment Guide (DEPLOY_GUIDE.md)](DEPLOY_GUIDE.md)**: 1-click cloud hosting on Vercel, Netlify, Railway, Render, and Docker.
+* **[WordPress-Style Setup Wizard (GETTING_STARTED.md#5-minute-setup-wizard)](GETTING_STARTED.md#5-minute-setup-wizard)**: Guided 5-minute visual onboarding installer.
 
 ---
 
-### 🎨 3. Customize (Customização & Design System)
-* **[Design Tokens & Temas (CUSTOMIZE.md)](CUSTOMIZE.md)**:
-  * 4 Temas Nativos (*Modern SaaS, Editorial Minimal, Vibrant Creative, Dark Luxury*).
-  * Variáveis CSS globais (`--cms-primary`, `--cms-radius`, `--cms-shadow`).
-  * Tipografia com injeção automática de Google Fonts (*Inter, Outfit, Playfair Display, Merriweather*).
-  * Injeção de regras CSS personalizadas no painel.
+### 🏛️ 2. Architecture & Design
+* **[System Architecture (ARCHITECTURE.md)](ARCHITECTURE.md)**: Next.js 15 App Router, React 19 Client/Server boundaries, ISR/SSG lifecycle, and state reactivity.
+* **[Python & FastAPI Sidecar (PYTHON_INTEGRATION.md)](PYTHON_INTEGRATION.md)**: Microservice backend architecture for 2D focal point image cropping and vector semantic search.
 
 ---
 
-### ✍️ 4. Content & Notion Editor (Editor Visual)
-* **[Editor Notion-Style (BLOCKS_AND_EDITOR.md)](BLOCKS_AND_EDITOR.md)**:
-  * Menu flutuante de **Slash Commands (`/`)**.
-  * Tabela de **Atalhos Globais de Teclado** (`Ctrl+S`, `Ctrl+P`, `Ctrl+I`, `?`).
-  * Criação e salvamento de **Blocos Reutilizáveis**.
-* **[Histórico de Versões & Visual Diff (PYTHON_INTEGRATION.md)](PYTHON_INTEGRATION.md#22-histórico-de-versões--comparador-visual-diff-wagtail-revisions)**: Snapshots e comparador de revisões.
+### 🧩 3. Components & Widgets
+* **[Component & Widget Catalog (COMPONENTS.md)](COMPONENTS.md)**:
+  * **Interactive**: *Collapsible FAQ Accordions, Multi-Tabs, Live-voting Polls, Roadmap & Timelines, Modal Dialogs*.
+  * **Rich Media**: *Podcast Audio Player with animated sound waves, 2D Focal Point Images, Masonry Galleries, Universal Embeds (YouTube, Spotify, Figma, CodeSandbox)*.
+  * **Marketing**: *Hero Banners, Conversion CTA Banners, SaaS Tiered Pricing Tables, Star-Rating Testimonials, KPI Metric Counters*.
+  * **Editorial**: *Notion-style Callout highlights, Structured Headings H1–H6, Rich Paragraphs, Syntax-Highlighted Code Blocks, Blockquotes*.
 
 ---
 
-### 🗄️ 5. Databases & Backend (Dados & Infraestrutura)
-* **[Bancos de Dados & Migrações (DATABASE_INTEGRATION.md)](DATABASE_INTEGRATION.md)**:
-  * PostgreSQL (Supabase / Neon) via Prisma ORM e Drizzle.
-  * MongoDB Atlas via Mongoose.
-  * SQLite / Turso local e serverless.
-  * Exportação e Importação de Backups JSON em 1 clique.
-* **[Camada Headless REST & GraphQL (GUIA_COMPLETO_CMS.md)](GUIA_COMPLETO_CMS.md#10-camada-headless-apis-rest--graphql)**: Consumo de endpoints para frontends externos e apps mobile.
+### 🎨 4. Customization & Theming
+* **[Design Tokens & Customization (CUSTOMIZE.md)](CUSTOMIZE.md)**:
+  * 4 Production Themes (*Modern SaaS, Editorial Minimal, Vibrant Creative, Dark Luxury*).
+  * Global CSS Custom Properties (`--cms-primary`, `--cms-radius`, `--cms-shadow`).
+  * Dynamic Google Fonts typography loader (*Inter, Outfit, Playfair Display, Merriweather*).
+  * Live custom CSS override injection.
 
 ---
 
-### 🔍 6. SEO, IA & Plugins
-* **[RankPulse SEO Pro (SEO_AND_PLUGINS.md)](SEO_AND_PLUGINS.md)**: Score 0-100, Google SERP Simulator, Social Cards e Schema.org JSON-LD.
-* **[IA Groq Llama 3.3 70B (GUIA_COMPLETO_CMS.md)](GUIA_COMPLETO_CMS.md#6-inteligência-artificial-integrada--groq-ai--llama-33-70b)**: Geração ultra-rápida de artigos e seções em menos de 1 segundo.
-* **[Ecossistema de Plugins (SEO_AND_PLUGINS.md)](SEO_AND_PLUGINS.md#2-ecossistema-de-plugins)**: WooCommerce Headless, Webhooks (Zapier/n8n) e Edge Cache Purge.
+### ✍️ 5. Content Management & Notion Editor
+* **[Blocks & Visual Editor Guide (BLOCKS_AND_EDITOR.md)](BLOCKS_AND_EDITOR.md)**:
+  * Floating **Slash Command Menu (`/`)**.
+  * Complete **Global Keyboard Shortcuts Table** (`Ctrl+S`, `Ctrl+P`, `Ctrl+I`, `?`).
+  * Saving, organizing, and inserting **Reusable Block Templates**.
+  * Version History, Snapshots, and Visual Diff Rollbacks.
 
 ---
 
-### 🏛️ 7. Architecture (Arquitetura Técnica)
-* **[Arquitetura do Sistema (ARCHITECTURE.md)](ARCHITECTURE.md)**: Next.js 15 App Router, React 19, fluxo de reatividade e ciclo de vida de dados.
+### 🗄️ 6. Databases & Persistence
+* **[Database & ORM Integration Guide (DATABASE_INTEGRATION.md)](DATABASE_INTEGRATION.md)**:
+  * PostgreSQL (Supabase / Neon / Railway) via Prisma ORM and Drizzle.
+  * MongoDB Atlas persistence via Mongoose schemas.
+  * Embedded SQLite / Turso for Edge runtimes.
+  * 1-Click JSON Snapshot backup and restore.
+
+---
+
+### 🔍 7. SEO, AI & Extensions
+* **[RankPulse SEO Suite (SEO_AND_PLUGINS.md)](SEO_AND_PLUGINS.md)**: Real-time 0–100 SEO scoring, Google SERP simulator, OpenGraph previews, and Schema.org JSON-LD generation.
+* **[Groq AI Copilot (Llama 3.3 70B)](SEO_AND_PLUGINS.md#groq-ai-integration)**: Sub-second AI drafting, tone rewriting, translation, and automated metadata synthesis.
+* **[Plugin Architecture (SEO_AND_PLUGINS.md#plugin-ecosystem)](SEO_AND_PLUGINS.md#plugin-ecosystem)**: Headless Commerce, Webhooks (Zapier/n8n/Slack), and Edge CDN Cache Purge.
